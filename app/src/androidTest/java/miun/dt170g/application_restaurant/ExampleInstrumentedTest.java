@@ -23,4 +23,5 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("miun.dt170g.application_restaurant", appContext.getPackageName());
     }
+
 }

@@ -7,7 +7,9 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import miun.dt170g.application_restaurant.entities.Employee;
 import miun.dt170g.application_restaurant.entities.Event;
+import miun.dt170g.application_restaurant.entities.MenuItem;
 import miun.dt170g.application_restaurant.retrofit.RetrofitClient;
 import miun.dt170g.application_restaurant.retrofit.RetrofitInterface;
 import retrofit2.Call;
@@ -22,8 +24,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         RetrofitInterface apiData = RetrofitClient.create();
-        Call<ArrayList<Event>> apiCall = apiData.getEvents();
-        apiCall.enqueue(new Callback<ArrayList<Event>>() {
+        Call<ArrayList<Event>> eventApi = apiData.getEvents();
+        Call<ArrayList<Employee>> empApi = apiData.getEmployees();
+        Call<ArrayList<MenuItem>> menuItemApi = apiData.getMenuItems();
+        eventApi.enqueue(new Callback<ArrayList<Event>>() {
             @Override
             public void onResponse(Call<ArrayList<Event>> call, Response<ArrayList<Event>> response) {
 
@@ -38,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
                     Log.e("API Error", "Forbidden: " + response.message());
                 }
             }
+
+
             @Override
             public void onFailure(Call<ArrayList<Event>> call, Throwable t) {
 

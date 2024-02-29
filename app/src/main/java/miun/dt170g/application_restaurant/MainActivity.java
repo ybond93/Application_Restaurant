@@ -7,6 +7,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import miun.dt170g.application_restaurant.entities.AlacarteMenuItem;
 import miun.dt170g.application_restaurant.entities.Employee;
 import miun.dt170g.application_restaurant.entities.Event;
 import miun.dt170g.application_restaurant.entities.MenuItem;
@@ -24,9 +25,35 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         RetrofitInterface apiData = RetrofitClient.create();
+        Call<ArrayList<AlacarteMenuItem>> alacarteMenuItemApi = apiData.getAlacarteMenuItem();
+
+        alacarteMenuItemApi.enqueue(new Callback<ArrayList<AlacarteMenuItem>>() {
+            @Override
+            public void onResponse(Call<ArrayList<AlacarteMenuItem>> call, Response<ArrayList<AlacarteMenuItem>> response) {
+
+                if (response.isSuccessful() && response.body() != null ) {
+
+                    ArrayList<AlacarteMenuItem> alacarteMenuItemList = response.body();
+                    Log.e("succ", "succ: " + response.code());
+
+                } else {
+
+                    Log.e("API Error", "Error: " + response.code());
+                    Log.e("API Error", "Forbidden: " + response.message());
+                }
+            }
+            @Override
+            public void onFailure(Call<ArrayList<AlacarteMenuItem>> call, Throwable t) {
+
+                Log.e("API Error", "Failed to fetch data", t);
+            }
+        });
+    }
+}
+
+/*
+RetrofitInterface apiData = RetrofitClient.create();
         Call<ArrayList<Event>> eventApi = apiData.getEvents();
-        Call<ArrayList<Employee>> empApi = apiData.getEmployees();
-        Call<ArrayList<MenuItem>> menuItemApi = apiData.getMenuItems();
         eventApi.enqueue(new Callback<ArrayList<Event>>() {
             @Override
             public void onResponse(Call<ArrayList<Event>> call, Response<ArrayList<Event>> response) {
@@ -50,5 +77,4 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("API Error", "Failed to fetch data", t);
             }
         });
-    }
-}
+*/

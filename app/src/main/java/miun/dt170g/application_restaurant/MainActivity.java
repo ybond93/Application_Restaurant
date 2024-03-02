@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         menuItemQuantities.add(new Order.MenuItemQuantityDTO(4, 2));
         menuItemQuantities.add(new Order.MenuItemQuantityDTO(8, 5));*/
 
-        Call<ArrayList<AlacarteMenuItem>> alacarteMenuItemApi = apiData.getAlacarteMenuItem();
+        /*Call<ArrayList<AlacarteMenuItem>> alacarteMenuItemApi = apiData.getAlacarteMenuItem();
         alacarteMenuItemApi.enqueue(new Callback<ArrayList<AlacarteMenuItem>>() {
             @Override
             public void onResponse(Call<ArrayList<AlacarteMenuItem>> call, Response<ArrayList<AlacarteMenuItem>> response) {
@@ -54,7 +54,24 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.e("API Error", "Failed to fetch data", t);
             }
-        });
+        });*/
+
+        //List<Integer> tt =  new ArrayList<>();
+        //Table temp = new Table(5, "In Progress",tt);
+        /*Call<Table> call = apiData.updateTableStatus(5, temp);
+        call.enqueue(new Callback<Table>() {
+            @Override
+            public void onResponse(Call<Table> call, Response<Table> response) {
+                if (response.isSuccessful()) {
+                    Table updatedTable = response.body();
+                } else {
+                }
+            }
+            @Override
+            public void onFailure(Call<Table> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });*/
 
         //Call<Employee> call = apiData.updateEmployee(1, updateEmp);
         /*call.enqueue(new Callback<Employee>() {

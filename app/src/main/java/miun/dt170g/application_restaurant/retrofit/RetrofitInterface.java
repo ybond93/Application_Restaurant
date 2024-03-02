@@ -29,6 +29,10 @@ public interface RetrofitInterface {
 
     @POST("orders")
     Call<Void> sendOrder(@Body Order order);
+
     @PUT("employees/{empId}")
     Call<Employee> updateEmployee(@Path("empId") int employeeId, @Body Employee employee);
+
+    @PUT("tables/{tableNum}")
+    Call<Table> updateTableStatus(@Path("tableNum") int tableNum, @Body Table table);
 }

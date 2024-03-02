@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import miun.dt170g.application_restaurant.entities.AlacarteMenuItem;
 import miun.dt170g.application_restaurant.entities.Employee;
@@ -23,9 +24,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         RetrofitInterface apiData = RetrofitClient.create();
-        Call<ArrayList<AlacarteMenuItem>> alacarteMenuItemApi = apiData.getAlacarteMenuItem();
+
+
+        /*Call<ArrayList<AlacarteMenuItem>> alacarteMenuItemApi = apiData.getAlacarteMenuItem();
         alacarteMenuItemApi.enqueue(new Callback<ArrayList<AlacarteMenuItem>>() {
             @Override
             public void onResponse(Call<ArrayList<AlacarteMenuItem>> call, Response<ArrayList<AlacarteMenuItem>> response) {
@@ -46,9 +48,9 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.e("API Error", "Failed to fetch data", t);
             }
-        });
+        });*/
 
-        Call<ArrayList<Employee>> employeeApi = apiData.getEmployee();
+        /*Call<ArrayList<Employee>> employeeApi = apiData.getEmployee();
         employeeApi.enqueue(new Callback<ArrayList<Employee>>() {
             @Override
             public void onResponse(Call<ArrayList<Employee>> call, Response<ArrayList<Employee>> response) {
@@ -69,9 +71,9 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.e("API Error", "Failed to fetch data", t);
             }
-        });
+        });*/
 
-        Call<ArrayList<Table>> tableApi = apiData.getTable();
+        /*Call<ArrayList<Table>> tableApi = apiData.getTable();
         tableApi.enqueue(new Callback<ArrayList<Table>>() {
             @Override
             public void onResponse(Call<ArrayList<Table>> call, Response<ArrayList<Table>> response) {
@@ -92,9 +94,39 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.e("API Error", "Failed to fetch data", t);
             }
+        });*/
+
+        Order newOrder = new Order();
+        List<Order.MenuItemQuantityDTO> menuItemQuantities = new ArrayList<>();
+        newOrder.setOrderId(0);
+        newOrder.setTableNum(10);
+        menuItemQuantities.add(new Order.MenuItemQuantityDTO(4, 2));
+        menuItemQuantities.add(new Order.MenuItemQuantityDTO(8, 5));
+
+
+        // Set menu item quantities for the order
+        newOrder.setMenuItemQuantities(menuItemQuantities);
+
+        Call<Void> orderCall = apiData.sendOrder(newOrder);
+        orderCall.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    // Handle successful response
+                    Log.e("Success", "order sent successfully");
+                } else {
+                    // Handle unsuccessful response
+                    Log.e("API Error", "Error code: " + response.code());
+                }
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // Handle failure
+                Log.e("API Error", "Failed to send order", t);
+            }
         });
 
-        Call<ArrayList<Order>> orderApi = apiData.getOrder();
+        /*Call<ArrayList<Order>> orderApi = apiData.getOrder();
         orderApi.enqueue(new Callback<ArrayList<Order>>() {
             @Override
             public void onResponse(Call<ArrayList<Order>> call, Response<ArrayList<Order>> response) {
@@ -115,6 +147,6 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.e("API Error", "Failed to fetch data", t);
             }
-        });
+        });*/
     }
 }

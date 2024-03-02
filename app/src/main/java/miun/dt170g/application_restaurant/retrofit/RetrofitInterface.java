@@ -10,6 +10,8 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
 
 public interface RetrofitInterface {
 
@@ -27,4 +29,6 @@ public interface RetrofitInterface {
 
     @POST("orders")
     Call<Void> sendOrder(@Body Order order);
+    @PUT("employees/{empId}")
+    Call<Employee> updateEmployee(@Path("empId") int employeeId, @Body Employee employee);
 }

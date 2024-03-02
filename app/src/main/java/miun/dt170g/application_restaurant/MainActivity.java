@@ -19,15 +19,13 @@ import miun.dt170g.application_restaurant.Adapters.EmployeeAdapter;
 import miun.dt170g.application_restaurant.entities.Employee;
 import miun.dt170g.application_restaurant.retrofit.RetrofitClient;
 import miun.dt170g.application_restaurant.retrofit.RetrofitInterface;
-public class MainActivity extends AppCompatActivity implements RecyclerViewInterface {
+
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         RetrofitInterface apiData = RetrofitClient.create();
         Call<ArrayList<Employee>> employeeApi = apiData.getEmployee();
@@ -51,14 +49,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewInter
 
                 Log.e("API Error", "Failed to fetch data", t);
             }
-        });//        EmployeeAdapter adapter = new EmployeeAdapter(this, employeeNames, this);
-  //      recyclerView.setAdapter(adapter);
-    }
-
-
-    @Override
-    public void onItemClick(int position) {
-        Intent intent = new Intent(MainActivity.this, Table_list_Activity.class);
-        startActivity(intent);
+        });
     }
 }

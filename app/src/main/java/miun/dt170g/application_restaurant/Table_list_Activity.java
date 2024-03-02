@@ -23,12 +23,12 @@ public class Table_list_Activity extends AppCompatActivity implements RecyclerVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table_list);
 
-        RecyclerView recyclerView = findViewById(R.id.tableListRecyclerView); // Ensure you have this RecyclerView in activity_table_list.xml
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+       // RecyclerView recyclerView = findViewById(R.id.tableListRecyclerView); // Ensure you have this RecyclerView in activity_table_list.xml
+        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
         List<String> tableNumbers = getTableNumbers();
 
         TableListAdapter adapter = new TableListAdapter(this, getTableNumbers(), this, activeOrders);
-        recyclerView.setAdapter(adapter);
+        //recyclerView.setAdapter(adapter);
 
 
     }

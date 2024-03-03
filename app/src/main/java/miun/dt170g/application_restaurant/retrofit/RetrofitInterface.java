@@ -7,7 +7,10 @@ import miun.dt170g.application_restaurant.entities.Employee;
 import miun.dt170g.application_restaurant.entities.Order;
 import miun.dt170g.application_restaurant.entities.Table;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
 
 public interface RetrofitInterface {
 
@@ -22,4 +25,7 @@ public interface RetrofitInterface {
 
     @GET("tables")
     Call<ArrayList<Table>> getTable();
+
+    @PUT("tables/{tableNum}")
+    Call<Table> updateTableStatus(@Path("tableNum") int tableNum, @Body Table table);
 }

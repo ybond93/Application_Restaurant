@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".testActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Drinks Section -->
+        <TextView
+            android:id="@+id/headerDrinks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Drinks"
+            android:background="?attr/selectableItemBackground"
+            android:padding="16dp"
+            android:textSize="20sp" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewDrinks"
+            android:tag="DrinksRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:nestedScrollingEnabled="false" />
+
+        <!-- Starters Section -->
+        <TextView
+            android:id="@+id/headerStarters"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Starters"
+            android:background="?attr/selectableItemBackground"
+            android:padding="16dp"
+            android:textSize="20sp" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewStarters"
+            android:tag="StartersRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:nestedScrollingEnabled="false" />
+
+        <!-- Mains Section -->
+        <TextView
+            android:id="@+id/headerMains"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Main"
+            android:background="?attr/selectableItemBackground"
+            android:padding="16dp"
+            android:textSize="20sp" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewMains"
+            android:tag="MainsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:nestedScrollingEnabled="false" />
+
+        <!-- Desserts Section -->
+        <TextView
+            android:id="@+id/headerDesserts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Desserts"
+            android:background="?attr/selectableItemBackground"
+            android:padding="16dp"
+            android:textSize="20sp" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewDesserts"
+            android:tag="DessertsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:nestedScrollingEnabled="false" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

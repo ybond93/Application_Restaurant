@@ -1,120 +1,75 @@
 package miun.dt170g.application_restaurant;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import java.util.ArrayList;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import miun.dt170g.application_restaurant.entities.AlacarteMenuItem;
-import miun.dt170g.application_restaurant.entities.Employee;
-import miun.dt170g.application_restaurant.entities.Order;
-import miun.dt170g.application_restaurant.entities.Table;
-import miun.dt170g.application_restaurant.retrofit.RetrofitClient;
-import miun.dt170g.application_restaurant.retrofit.RetrofitInterface;
+import java.util.ArrayList;
+import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
+import miun.dt170g.application_restaurant.Adapters.EmployeeAdapter;
+import miun.dt170g.application_restaurant.entities.Employee;
+import miun.dt170g.application_restaurant.retrofit.RetrofitClient;
+import miun.dt170g.application_restaurant.retrofit.RetrofitInterface;
 public class MainActivity extends AppCompatActivity {
+
+    // Define RecyclerView and Adapter at the class level to access them in fetchEmployees method
+    private RecyclerView recyclerView;
+    private EmployeeAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Initialize RecyclerView
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // Fetch employees and set up the adapter in the fetchEmployees method
+        fetchEmployees();
+    }
+
+    private void fetchEmployees() {
         RetrofitInterface apiData = RetrofitClient.create();
-        Call<ArrayList<AlacarteMenuItem>> alacarteMenuItemApi = apiData.getAlacarteMenuItem();
-        alacarteMenuItemApi.enqueue(new Callback<ArrayList<AlacarteMenuItem>>() {
-            @Override
-            public void onResponse(Call<ArrayList<AlacarteMenuItem>> call, Response<ArrayList<AlacarteMenuItem>> response) {
-
-                if (response.isSuccessful() && response.body() != null ) {
-
-                    ArrayList<AlacarteMenuItem> alacarteMenuItemList = response.body();
-                    Log.e("succ", "succ: " + response.code());
-
-                } else {
-
-                    Log.e("API Error", "Error: " + response.code());
-                    Log.e("API Error", "Forbidden: " + response.message());
-                }
-            }
-            @Override
-            public void onFailure(Call<ArrayList<AlacarteMenuItem>> call, Throwable t) {
-
-                Log.e("API Error", "Failed to fetch data", t);
-            }
-        });
-
         Call<ArrayList<Employee>> employeeApi = apiData.getEmployee();
+
         employeeApi.enqueue(new Callback<ArrayList<Employee>>() {
             @Override
             public void onResponse(Call<ArrayList<Employee>> call, Response<ArrayList<Employee>> response) {
-
-                if (response.isSuccessful() && response.body() != null ) {
-
+                if (response.isSuccessful() && response.body() != null) {
                     ArrayList<Employee> employeeList = response.body();
-                    Log.e("succ", "succ: " + response.code());
-
+                    // Initialize and set adapter with fetched employees
+                    adapter = new EmployeeAdapter(MainActivity.this, employeeList, new RecyclerViewInterface() {
+                        @Override
+                        public void onItemClick(int position) {
+                            // Implement the action on item click
+                            Intent intent = new Intent(MainActivity.this, Table_list_Activity.class);
+                            startActivity(intent);
+                        }
+                    });
+                    recyclerView.setAdapter(adapter);
+                    Log.e("Success", "Successfully fetched employees: " + response.body().size());
                 } else {
-
                     Log.e("API Error", "Error: " + response.code());
-                    Log.e("API Error", "Forbidden: " + response.message());
                 }
             }
+
             @Override
             public void onFailure(Call<ArrayList<Employee>> call, Throwable t) {
-
-                Log.e("API Error", "Failed to fetch data", t);
-            }
-        });
-
-        Call<ArrayList<Table>> tableApi = apiData.getTable();
-        tableApi.enqueue(new Callback<ArrayList<Table>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Table>> call, Response<ArrayList<Table>> response) {
-
-                if (response.isSuccessful() && response.body() != null ) {
-
-                    ArrayList<Table> tableList = response.body();
-                    Log.e("succ", "succ: " + response.code());
-
-                } else {
-
-                    Log.e("API Error", "Error: " + response.code());
-                    Log.e("API Error", "Forbidden: " + response.message());
-                }
-            }
-            @Override
-            public void onFailure(Call<ArrayList<Table>> call, Throwable t) {
-
-                Log.e("API Error", "Failed to fetch data", t);
-            }
-        });
-
-        Call<ArrayList<Order>> orderApi = apiData.getOrder();
-        orderApi.enqueue(new Callback<ArrayList<Order>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Order>> call, Response<ArrayList<Order>> response) {
-
-                if (response.isSuccessful() && response.body() != null ) {
-
-                    ArrayList<Order> orderList = response.body();
-                    Log.e("succ", "succ: " + response.code());
-
-                } else {
-
-                    Log.e("API Error", "Error: " + response.code());
-                    Log.e("API Error", "Forbidden: " + response.message());
-                }
-            }
-            @Override
-            public void onFailure(Call<ArrayList<Order>> call, Throwable t) {
-
                 Log.e("API Error", "Failed to fetch data", t);
             }
         });
     }
 }
+
+
+

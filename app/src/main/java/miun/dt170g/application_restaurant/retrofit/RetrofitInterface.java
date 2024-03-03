@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import miun.dt170g.application_restaurant.entities.AlacarteMenuItem;
 import miun.dt170g.application_restaurant.entities.Employee;
+import miun.dt170g.application_restaurant.entities.MenuItemOrders;
 import miun.dt170g.application_restaurant.entities.Order;
 import miun.dt170g.application_restaurant.entities.Table;
 import retrofit2.Call;
@@ -27,8 +28,14 @@ public interface RetrofitInterface {
     @GET("tables")
     Call<ArrayList<Table>> getTable();
 
-    @POST("orders")
+    @POST("orders") //den här för order bara
     Call<Void> sendOrder(@Body Order order);
+    @POST("menuitemorders")
+    Call<Void> send(@Body MenuItemOrders menuItemOrders);
+
     @PUT("employees/{empId}")
     Call<Employee> updateEmployee(@Path("empId") int employeeId, @Body Employee employee);
+
+
+
 }

@@ -10,6 +10,7 @@ import java.util.List;
 
 import miun.dt170g.application_restaurant.entities.AlacarteMenuItem;
 import miun.dt170g.application_restaurant.entities.Employee;
+import miun.dt170g.application_restaurant.entities.MenuItemOrders;
 import miun.dt170g.application_restaurant.entities.Order;
 import miun.dt170g.application_restaurant.entities.Table;
 import miun.dt170g.application_restaurant.retrofit.RetrofitClient;
@@ -26,52 +27,54 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         RetrofitInterface apiData = RetrofitClient.create();
 
+        Employee updateEmp = new Employee(1,"Julian", "Nordin");
+        /*List<Order.MenuItemQuantityDTO> menuItemQuantities = new ArrayList<>();
+        newOrder.setOrderId(0);
+        newOrder.setTableNum(10);
+        menuItemQuantities.add(new Order.MenuItemQuantityDTO(4, 2));
+        menuItemQuantities.http://localhost:8080/Website-1.0-SNAPSHOT/api/ordersadd(new Order.MenuItemQuantityDTO(8, 5));*/
+        MenuItemOrders menuItemOrders = new MenuItemOrders(11,2,2);
 
-        /*Call<ArrayList<AlacarteMenuItem>> alacarteMenuItemApi = apiData.getAlacarteMenuItem();
-        alacarteMenuItemApi.enqueue(new Callback<ArrayList<AlacarteMenuItem>>() {
+        Call<Void> menuitemsorderCall = apiData.send(menuItemOrders);
+        menuitemsorderCall.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<ArrayList<AlacarteMenuItem>> call, Response<ArrayList<AlacarteMenuItem>> response) {
-
-                if (response.isSuccessful() && response.body() != null ) {
-
-                    ArrayList<AlacarteMenuItem> alacarteMenuItemList = response.body();
-                    Log.e("succ", "succ: " + response.code());
-
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    // Handle successful response
+                    Log.e("Success", "order sent successfully");
                 } else {
-
-                    Log.e("API Error", "Error: " + response.code());
-                    Log.e("API Error", "Forbidden: " + response.message());
+                    // Handle unsuccessful response
+                    Log.e("API Error", "Error code: " + response.code());
                 }
             }
             @Override
-            public void onFailure(Call<ArrayList<AlacarteMenuItem>> call, Throwable t) {
-
-                Log.e("API Error", "Failed to fetch data", t);
+            public void onFailure(Call<Void> call, Throwable t) {
+                // Handle failure
+                Log.e("API Error", "Failed to send order", t);
             }
-        });*/
+        });
 
-        /*Call<ArrayList<Employee>> employeeApi = apiData.getEmployee();
-        employeeApi.enqueue(new Callback<ArrayList<Employee>>() {
+
+        //Call<Employee> call = apiData.updateEmployee(1, updateEmp);
+        /*call.enqueue(new Callback<Employee>() {
             @Override
-            public void onResponse(Call<ArrayList<Employee>> call, Response<ArrayList<Employee>> response) {
-
-                if (response.isSuccessful() && response.body() != null ) {
-
-                    ArrayList<Employee> employeeList = response.body();
-                    Log.e("succ", "succ: " + response.code());
-
+            public void onResponse(Call<Employee> call, Response<Employee> response) {
+                if (response.isSuccessful()) {
+                    // Employee updated successfully
+                    Employee updatedEmployee = response.body();
+                    // Handle the updated employee object
                 } else {
-
-                    Log.e("API Error", "Error: " + response.code());
-                    Log.e("API Error", "Forbidden: " + response.message());
+                    // Handle HTTP error response
+                    // For example, response.code(), response.errorBody(), etc.
                 }
             }
             @Override
-            public void onFailure(Call<ArrayList<Employee>> call, Throwable t) {
-
-                Log.e("API Error", "Failed to fetch data", t);
+            public void onFailure(Call<Employee> call, Throwable t) {
+                // Handle failure
+                t.printStackTrace();
             }
         });*/
+
 
         /*Call<ArrayList<Table>> tableApi = apiData.getTable();
         tableApi.enqueue(new Callback<ArrayList<Table>>() {
@@ -96,18 +99,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
-        Order newOrder = new Order();
-        List<Order.MenuItemQuantityDTO> menuItemQuantities = new ArrayList<>();
-        newOrder.setOrderId(0);
-        newOrder.setTableNum(10);
-        menuItemQuantities.add(new Order.MenuItemQuantityDTO(4, 2));
-        menuItemQuantities.add(new Order.MenuItemQuantityDTO(8, 5));
-
-
         // Set menu item quantities for the order
-        newOrder.setMenuItemQuantities(menuItemQuantities);
+        //newOrder.setMenuItemQuantities(menuItemQuantities);
 
-        Call<Void> orderCall = apiData.sendOrder(newOrder);
+        /*Call<Void> orderCall = apiData.sendOrder(newOrder);
         orderCall.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -124,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 // Handle failure
                 Log.e("API Error", "Failed to send order", t);
             }
-        });
+        });*/
 
         /*Call<ArrayList<Order>> orderApi = apiData.getOrder();
         orderApi.enqueue(new Callback<ArrayList<Order>>() {

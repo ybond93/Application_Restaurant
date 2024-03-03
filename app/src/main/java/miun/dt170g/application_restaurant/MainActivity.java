@@ -27,13 +27,41 @@ public class MainActivity extends AppCompatActivity {
         RetrofitInterface apiData = RetrofitClient.create();
 
         Employee updateEmp = new Employee(1,"Julian", "Nordin");
-        /*List<Order.MenuItemQuantityDTO> menuItemQuantities = new ArrayList<>();
+
+        List<Order.MenuItemQuantityDTO> menuItemQuantities = new ArrayList<>();
+        Order newOrder = new Order();
         newOrder.setOrderId(0);
         newOrder.setTableNum(10);
         menuItemQuantities.add(new Order.MenuItemQuantityDTO(4, 2));
-        menuItemQuantities.add(new Order.MenuItemQuantityDTO(8, 5));*/
+        menuItemQuantities.add(new Order.MenuItemQuantityDTO(8, 5));
+        newOrder.setMenuItemQuantities(menuItemQuantities);
 
-        Call<ArrayList<AlacarteMenuItem>> alacarteMenuItemApi = apiData.getAlacarteMenuItem();
+        Call<ArrayList<Order>> orderApi = apiData.getOrder();
+        orderApi.enqueue(new Callback<ArrayList<Order>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Order>> call, Response<ArrayList<Order>> response) {
+
+                if (response.isSuccessful() && response.body() != null ) {
+
+                    ArrayList<Order> orderList = response.body();
+                    Log.e("succ", "succ: " + response.code());
+
+                } else {
+
+                    Log.e("API Error", "Error: " + response.code());
+                    Log.e("API Error", "Forbidden: " + response.message());
+                }
+            }
+            @Override
+            public void onFailure(Call<ArrayList<Order>> call, Throwable t) {
+
+                Log.e("API Error", "Failed to fetch data", t);
+            }
+        });
+
+
+
+        /*Call<ArrayList<AlacarteMenuItem>> alacarteMenuItemApi = apiData.getAlacarteMenuItem();
         alacarteMenuItemApi.enqueue(new Callback<ArrayList<AlacarteMenuItem>>() {
             @Override
             public void onResponse(Call<ArrayList<AlacarteMenuItem>> call, Response<ArrayList<AlacarteMenuItem>> response) {
@@ -54,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.e("API Error", "Failed to fetch data", t);
             }
-        });
+        });*/
 
         //Call<Employee> call = apiData.updateEmployee(1, updateEmp);
         /*call.enqueue(new Callback<Employee>() {

@@ -26,14 +26,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         RetrofitInterface apiData = RetrofitClient.create();
 
-        Employee updateEmp = new Employee(1,"Julian", "Nordin");
-        /*List<Order.MenuItemQuantityDTO> menuItemQuantities = new ArrayList<>();
-        newOrder.setOrderId(0);
-        newOrder.setTableNum(10);
-        menuItemQuantities.add(new Order.MenuItemQuantityDTO(4, 2));
-        menuItemQuantities.add(new Order.MenuItemQuantityDTO(8, 5));*/
 
-        Call<ArrayList<AlacarteMenuItem>> alacarteMenuItemApi = apiData.getAlacarteMenuItem();
+        /*Call<ArrayList<AlacarteMenuItem>> alacarteMenuItemApi = apiData.getAlacarteMenuItem();
         alacarteMenuItemApi.enqueue(new Callback<ArrayList<AlacarteMenuItem>>() {
             @Override
             public void onResponse(Call<ArrayList<AlacarteMenuItem>> call, Response<ArrayList<AlacarteMenuItem>> response) {
@@ -54,28 +48,30 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.e("API Error", "Failed to fetch data", t);
             }
-        });
+        });*/
 
-        //Call<Employee> call = apiData.updateEmployee(1, updateEmp);
-        /*call.enqueue(new Callback<Employee>() {
+        /*Call<ArrayList<Employee>> employeeApi = apiData.getEmployee();
+        employeeApi.enqueue(new Callback<ArrayList<Employee>>() {
             @Override
-            public void onResponse(Call<Employee> call, Response<Employee> response) {
-                if (response.isSuccessful()) {
-                    // Employee updated successfully
-                    Employee updatedEmployee = response.body();
-                    // Handle the updated employee object
+            public void onResponse(Call<ArrayList<Employee>> call, Response<ArrayList<Employee>> response) {
+
+                if (response.isSuccessful() && response.body() != null ) {
+
+                    ArrayList<Employee> employeeList = response.body();
+                    Log.e("succ", "succ: " + response.code());
+
                 } else {
-                    // Handle HTTP error response
-                    // For example, response.code(), response.errorBody(), etc.
+
+                    Log.e("API Error", "Error: " + response.code());
+                    Log.e("API Error", "Forbidden: " + response.message());
                 }
             }
             @Override
-            public void onFailure(Call<Employee> call, Throwable t) {
-                // Handle failure
-                t.printStackTrace();
+            public void onFailure(Call<ArrayList<Employee>> call, Throwable t) {
+
+                Log.e("API Error", "Failed to fetch data", t);
             }
         });*/
-
 
         /*Call<ArrayList<Table>> tableApi = apiData.getTable();
         tableApi.enqueue(new Callback<ArrayList<Table>>() {
@@ -100,10 +96,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
-        // Set menu item quantities for the order
-        //newOrder.setMenuItemQuantities(menuItemQuantities);
+        Order newOrder = new Order();
+        List<Order.MenuItemQuantityDTO> menuItemQuantities = new ArrayList<>();
+        newOrder.setOrderId(0);
+        newOrder.setTableNum(10);
+        menuItemQuantities.add(new Order.MenuItemQuantityDTO(4, 2));
+        menuItemQuantities.add(new Order.MenuItemQuantityDTO(8, 5));
 
-        /*Call<Void> orderCall = apiData.sendOrder(newOrder);
+
+        // Set menu item quantities for the order
+        newOrder.setMenuItemQuantities(menuItemQuantities);
+
+        Call<Void> orderCall = apiData.sendOrder(newOrder);
         orderCall.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -120,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 // Handle failure
                 Log.e("API Error", "Failed to send order", t);
             }
-        });*/
+        });
 
         /*Call<ArrayList<Order>> orderApi = apiData.getOrder();
         orderApi.enqueue(new Callback<ArrayList<Order>>() {

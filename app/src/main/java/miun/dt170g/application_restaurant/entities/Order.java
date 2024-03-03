@@ -1,37 +1,26 @@
 package miun.dt170g.application_restaurant.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
 
     private int orderId;
     private int tableNum;
-    private List<MenuItemQuantityDTO> menuItemQuantities;
+    private List<MenuItemOrders> menuItemOrders = new ArrayList<>();
 
-    public static class MenuItemQuantityDTO {
-        private int menuItemId;
-        private int amount;
+    // Initialize the list in the constructor or elsewhere before adding items
+    public Order() {
+        menuItemOrders = new ArrayList<>();
+    }
 
-        public MenuItemQuantityDTO(int menuItemId, int amount) {
-            this.menuItemId = menuItemId;
-            this.amount = amount;
-        }
+    public void setMenuItemOrders(List<MenuItemOrders> menuItemOrders) {
+        this.menuItemOrders = menuItemOrders;
+    }
 
-        public int getMenuItemId() {
-            return menuItemId;
-        }
-
-        public void setMenuItemId(int menuItemId) {
-            this.menuItemId = menuItemId;
-        }
-
-        public int getAmount() {
-            return amount;
-        }
-
-        public void setAmount(int amount) {
-            this.amount = amount;
-        }
+    // Method to add a menu item order to the list
+    public void addMenuItemOrder(MenuItemOrders menuItemOrder) {
+        menuItemOrders.add(menuItemOrder);
     }
 
     public int getOrderId() {
@@ -50,11 +39,4 @@ public class Order {
         this.tableNum = tableNum;
     }
 
-    public List<MenuItemQuantityDTO> getMenuItemQuantities() {
-        return menuItemQuantities;
-    }
-
-    public void setMenuItemQuantities(List<MenuItemQuantityDTO> menuItemQuantities) {
-        this.menuItemQuantities = menuItemQuantities;
-    }
 }

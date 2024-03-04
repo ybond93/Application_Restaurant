@@ -8,6 +8,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
+
+import miun.dt170g.application_restaurant.entities.MenuItemOrdersDTO;
 import miun.dt170g.application_restaurant.entities.OrderItem;
 import miun.dt170g.application_restaurant.R;
 import android.content.Context;
@@ -26,11 +28,11 @@ import java.util.List;
 
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewHolder> {
 
-    private List<Order> orderList;
+    private List<MenuItemOrdersDTO> orderList;
     private List<AlacarteMenuItem> allMenuItems; // List to hold all menu items
     private LayoutInflater inflater;
 
-    public OrdersAdapter(Context context, List<Order> orderList, List<AlacarteMenuItem> allMenuItems) {
+    public OrdersAdapter(Context context, List<MenuItemOrdersDTO> orderList, List<AlacarteMenuItem> allMenuItems) {
         this.inflater = LayoutInflater.from(context);
         this.orderList = orderList;
         this.allMenuItems = allMenuItems; // Initialize with the provided list
@@ -45,15 +47,24 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
 
     @Override
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
-        Order currentOrder = orderList.get(position);
-        holder.tableNumberTextView.setText("Table: " + currentOrder.getTableNum());
+        MenuItemOrdersDTO currentOrder = orderList.get(position);
+        holder.tableNumberTextView.setText("Table: " + currentOrder.getOrderId().getTableNum().getTableNum());
         StringBuilder menuItemsText = new StringBuilder();
-        for (Order.MenuItemQuantityDTO item : currentOrder.getMenuItemQuantities()) {
-            String itemName = getMenuItemNameById(item.getMenuItemId());
+
+        for (MenuItemOrdersDTO item : currentOrder.getOrderId().getMenuItemsOrders()) {
+            String itemName = getMenuItemNameById(item.getItemId().getId());
+
             menuItemsText.append(itemName).append(" x ").append(item.getAmount()).append("\n");
         }
         holder.menuItemsTextView.setText(menuItemsText.toString().trim());
     }
+
+    /**
+     * This class is needed whenever new data is fetched
+     * through @GET. Once we have the new data, we should
+     * call this method from the "onResponse" method
+     * @param newMenuItems
+     */
     public void updateMenuItems(List<AlacarteMenuItem> newMenuItems) {
         this.allMenuItems.clear();
         this.allMenuItems.addAll(newMenuItems);
@@ -77,7 +88,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             menuItemsTextView = itemView.findViewById(R.id.order_item_name);
         }
     }
-    public void updateOrders(List<Order> newOrders) {
+    public void updateOrders(List<MenuItemOrdersDTO> newOrders) {
         this.orderList.clear();
         this.orderList.addAll(newOrders);
         notifyDataSetChanged();

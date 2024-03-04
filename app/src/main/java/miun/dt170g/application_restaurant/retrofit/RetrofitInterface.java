@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import miun.dt170g.application_restaurant.entities.AlacarteMenuItem;
 import miun.dt170g.application_restaurant.entities.Employee;
+import miun.dt170g.application_restaurant.entities.MenuItemOrdersDTO;
 import miun.dt170g.application_restaurant.entities.Order;
 import miun.dt170g.application_restaurant.entities.Table;
 import retrofit2.Call;
@@ -20,11 +21,14 @@ public interface RetrofitInterface {
     @GET("employees")
     Call<ArrayList<Employee>> getEmployee();
 
-    @GET("orders")
-    Call<ArrayList<Order>> getOrder();
-
     @GET("tables")
     Call<ArrayList<Table>> getTable();
+
+    @GET("menuitemorders")
+    Call<ArrayList<MenuItemOrdersDTO>> getMenuItemOrdersDTO();
+
+    @GET("orders")
+    Call<ArrayList<Order>> getOrder();
 
     @PUT("tables/{tableNum}")
     Call<Table> updateTableStatus(@Path("tableNum") int tableNum, @Body Table table);

@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import miun.dt170g.application_restaurant.Adapters.AlacarteMenuAdapter;
 import miun.dt170g.application_restaurant.Adapters.OrdersAdapter;
 import miun.dt170g.application_restaurant.entities.AlacarteMenuItem;
+import miun.dt170g.application_restaurant.entities.MenuItemOrdersDTO;
 import miun.dt170g.application_restaurant.entities.Order;
 import miun.dt170g.application_restaurant.retrofit.RetrofitClient;
 import miun.dt170g.application_restaurant.retrofit.RetrofitInterface;
@@ -27,7 +28,7 @@ public class testActivity extends AppCompatActivity {
     private RecyclerView recyclerViewDrinks, recyclerViewMains, recyclerViewStarters, recyclerViewDesserts, recyclerViewOrders;
     private TextView headerDrinks, headerMains, headerStarters, headerDesserts, headerOrders;
     private OrdersAdapter orderAdapter;
-    private List<Order> ordersList = new ArrayList<>(); // Placeholder for orders data
+    private List<MenuItemOrdersDTO> ordersList = new ArrayList<>(); // Placeholder for orders data
     private int selectedTableNumber; // Variable to hold the selected table number
 
     @Override
@@ -109,14 +110,15 @@ public class testActivity extends AppCompatActivity {
 
     private void fetchOrders() {
         RetrofitInterface apiData = RetrofitClient.create();
-        Call<ArrayList<Order>> orderApi = apiData.getOrder();
-        orderApi.enqueue(new Callback<ArrayList<Order>>() {
+        Call<ArrayList<MenuItemOrdersDTO>> orderApi = apiData.getMenuItemOrdersDTO();
+        orderApi.enqueue(new Callback<ArrayList<MenuItemOrdersDTO>>() {
             @Override
-            public void onResponse(Call<ArrayList<Order>> call, Response<ArrayList<Order>> response) {
+            public void onResponse(Call<ArrayList<MenuItemOrdersDTO>> call, Response<ArrayList<MenuItemOrdersDTO>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    ArrayList<Order> allOrders = response.body();
-                    List<Order> filteredOrders = allOrders.stream()
-                            .filter(order -> order.getTableNum() == selectedTableNumber)
+                    ArrayList<MenuItemOrdersDTO> allOrders = response.body();
+
+                    List<MenuItemOrdersDTO> filteredOrders = allOrders.stream()
+                            .filter(order -> order.getOrderId().getTableNum().getTableNum() == selectedTableNumber)
                             .collect(Collectors.toList());
 
                     // Update the OrderAdapter with filtered orders
@@ -133,7 +135,7 @@ public class testActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ArrayList<Order>> call, Throwable t) {
+            public void onFailure(Call<ArrayList<MenuItemOrdersDTO>> call, Throwable t) {
                 Log.e("API Error", "Failed to fetch orders", t);
             }
         });

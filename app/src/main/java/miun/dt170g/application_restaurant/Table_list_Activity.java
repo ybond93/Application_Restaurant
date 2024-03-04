@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -120,11 +121,26 @@ public class Table_list_Activity extends AppCompatActivity  {
 
 
     // Optional: Update activeOrders if your logic requires
-    public void updateActiveOrders(int tableNumber) {
-        activeOrders.add(String.valueOf(tableNumber));
-        // You might need to refresh your adapter to reflect the changes visually
-        adapter.notifyDataSetChanged();
+    // Add a method to update the set of active orders
+    public void updateActiveOrders(String tableName) {
+        activeOrders.add(tableName);
     }
 
+    private List<String> getTableNumbers() {
+        return Arrays.asList("Table 1", "Table 2", "Table 3");
+    }
+
+    /*
+    @Override
+    public void onItemClick(int position) {
+        Intent intent = new Intent(Table_list_Activity.this, MenuActivity.class);
+        // Example: Passing the table name to MenuActivity
+        String tableName = getTableNumbers().get(position);
+        intent.putExtra("tableName", tableName);
+        updateActiveOrders(tableName); // Mark this table as having an active order
+        startActivity(intent);
+    }
+
+     */
 
 }

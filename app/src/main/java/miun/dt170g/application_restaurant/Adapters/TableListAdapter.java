@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import miun.dt170g.application_restaurant.MenuActivity;
 import miun.dt170g.application_restaurant.R; // Make sure you import R from your project
 import miun.dt170g.application_restaurant.RecyclerViewInterface;
 import miun.dt170g.application_restaurant.Table_list_Activity;

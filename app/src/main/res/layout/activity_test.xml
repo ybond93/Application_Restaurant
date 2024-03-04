@@ -50,7 +50,7 @@
             android:id="@+id/headerMains"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Main"
+            android:text="Mains"
             android:background="?attr/selectableItemBackground"
             android:padding="16dp"
             android:textSize="20sp" />
@@ -77,6 +77,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            android:nestedScrollingEnabled="false" />
+
+        <!-- Orders Section -->
+        <TextView
+            android:id="@+id/headerOrders"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Orders"
+            android:background="?attr/selectableItemBackground"
+            android:padding="16dp"
+            android:textSize="20sp"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewOrders"
+            android:tag="OrdersRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
             android:nestedScrollingEnabled="false" />
 
     </LinearLayout>

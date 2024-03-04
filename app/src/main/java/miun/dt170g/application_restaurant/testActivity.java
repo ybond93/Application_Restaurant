@@ -120,7 +120,7 @@ public class testActivity extends AppCompatActivity {
                             .collect(Collectors.toList());
 
                     // Update the OrderAdapter with filtered orders
-                    orderAdapter.updateOrders(filteredOrders); // Use the filtered list here
+                    //orderAdapter.updateOrders(filteredOrders); // Use the filtered list here
 
                     // Update the OrderAdapter with all fetched orders
                     orderAdapter.updateOrders(allOrders); // This line is crucial

@@ -6,17 +6,15 @@ import java.util.List;
 public class OrdersDTO {
 
     private int orderId;
-    private TablesDTO tableNum;
-    private List<MenuItemOrdersDTO> menuItemsOrders;
+    private String status;
+    private TablesDTO table;
 
+    public OrdersDTO(){};
 
-
-    public TablesDTO getTableNum() {return  tableNum;}
-
-    public OrdersDTO(int orderId, TablesDTO tableNum, List<MenuItemOrdersDTO> menuItemsOrders) {
+    public OrdersDTO(int orderId, String status, TablesDTO table) {
         this.orderId = orderId;
-        this.tableNum = tableNum;
-        this.menuItemsOrders = menuItemsOrders;
+        this.status = status;
+        this.table = table;
     }
 
     public int getOrderId() {
@@ -27,15 +25,19 @@ public class OrdersDTO {
         this.orderId = orderId;
     }
 
-    public void setTableNum(TablesDTO tableNum) {
-        this.tableNum = tableNum;
+    public String getStatus() {
+        return status;
     }
 
-    public List<MenuItemOrdersDTO> getMenuItemsOrders() {
-        return menuItemsOrders;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public void setMenuItemsOrders(List<MenuItemOrdersDTO> menuItemsOrders) {
-        this.menuItemsOrders = menuItemsOrders;
+    public TablesDTO getTable() {
+        return table;
+    }
+
+    public void setTable(TablesDTO table) {
+        this.table = table;
     }
 }

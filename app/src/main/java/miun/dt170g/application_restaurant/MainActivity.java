@@ -12,6 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import miun.dt170g.application_restaurant.entities.MenuItemOrdersDTO;
+import miun.dt170g.application_restaurant.entities.MenuItemsDTO;
+import miun.dt170g.application_restaurant.entities.OrdersDTO;
+import miun.dt170g.application_restaurant.entities.TablesDTO;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,8 +45,60 @@ public class MainActivity extends AppCompatActivity {
 
     private void fetchEmployees() {
         RetrofitInterface apiData = RetrofitClient.create();
-        Call<ArrayList<Employee>> employeeApi = apiData.getEmployee();
 
+
+        /*
+        // Inserting order(MenuItemOrdersDTO) test
+        MenuItemsDTO menuItemsDTO = new MenuItemsDTO(1, "Caesar Salad", 7.99);
+        TablesDTO tablesDTO = new TablesDTO(10, "busy");
+        OrdersDTO ordersDTO = new OrdersDTO(0,"Idle", tablesDTO);
+        MenuItemOrdersDTO menuItemOrdersDTO = new MenuItemOrdersDTO(menuItemsDTO, ordersDTO, 8);
+
+
+        Call<Void> orderCall = apiData.sendOrder(menuItemOrdersDTO);
+        orderCall.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    // Handle successful response
+                    Log.e("Success", "order sent successfully");
+                } else {
+                    // Handle unsuccessful response
+                    Log.e("API Error", "Error code: " + response.code());
+                }
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // Handle failure
+                Log.e("API Error", "Failed to send order", t);
+            }
+        });*/
+
+        Call<ArrayList<Order>> orderApi = apiData.getOrder();
+        orderApi.enqueue(new Callback<ArrayList<Order>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Order>> call, Response<ArrayList<Order>> response) {
+
+                if (response.isSuccessful() && response.body() != null ) {
+
+                    ArrayList<Order> orderList = response.body();
+                    Log.e("succ", "succ: " + response.code());
+
+                } else {
+
+                    Log.e("API Error", "Error: " + response.code());
+                    Log.e("API Error", "Forbidden: " + response.message());
+                }
+            }
+            @Override
+            public void onFailure(Call<ArrayList<Order>> call, Throwable t) {
+
+                Log.e("API Error", "Failed to fetch data", t);
+            }
+        });
+
+
+        /*Call<ArrayList<Employee>> employeeApi = apiData.getEmployee();
         employeeApi.enqueue(new Callback<ArrayList<Employee>>() {
             @Override
             public void onResponse(Call<ArrayList<Employee>> call, Response<ArrayList<Employee>> response) {
@@ -67,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call<ArrayList<Employee>> call, Throwable t) {
                 Log.e("API Error", "Failed to fetch data", t);
             }
-        });
+        });*/
     }
 }
 

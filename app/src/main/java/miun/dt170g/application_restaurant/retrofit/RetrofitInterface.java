@@ -10,6 +10,7 @@ import miun.dt170g.application_restaurant.entities.Table;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
@@ -32,4 +33,7 @@ public interface RetrofitInterface {
 
     @PUT("tables/{tableNum}")
     Call<Table> updateTableStatus(@Path("tableNum") int tableNum, @Body Table table);
+
+    @POST("menuitemorder")
+    Call<Void> sendOrder(@Body MenuItemOrdersDTO MenuItemOrder);
 }

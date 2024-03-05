@@ -4,39 +4,36 @@ public class MenuItemsDTO {
     private int id;
     private String name;
     private Double price;
-    private String descr;
-    // Consider if you need a list of MenuItemOrdersDTO depending on your use case
 
-    public String getName() {
-        return name;
-    }
+    public MenuItemsDTO(){};
 
-    public Double getPrice() {
-        return price;
+    public MenuItemsDTO(int id, String name, Double price) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getDescr() {
-        return descr;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setDescr(String descr) {
-        this.descr = descr;
+    public Double getPrice() {
+        return price;
     }
-    // Constructors, Getters, and Setters
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
 }

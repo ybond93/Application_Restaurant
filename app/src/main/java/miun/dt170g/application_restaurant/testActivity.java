@@ -117,9 +117,9 @@ public class testActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     ArrayList<MenuItemOrdersDTO> allOrders = response.body();
 
-                    List<MenuItemOrdersDTO> filteredOrders = allOrders.stream()
+                    /*List<MenuItemOrdersDTO> filteredOrders = allOrders.stream()
                             .filter(order -> order.getOrderId().getTableNum().getTableNum() == selectedTableNumber)
-                            .collect(Collectors.toList());
+                            .collect(Collectors.toList());*/
 
                     // Update the OrderAdapter with filtered orders
                     //orderAdapter.updateOrders(filteredOrders); // Use the filtered list here

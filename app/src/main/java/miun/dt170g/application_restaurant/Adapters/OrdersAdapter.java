@@ -48,15 +48,15 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
     @Override
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
         MenuItemOrdersDTO currentOrder = orderList.get(position);
-        holder.tableNumberTextView.setText("Table: " + currentOrder.getOrderId().getTableNum().getTableNum());
+        holder.tableNumberTextView.setText("Table: " + currentOrder.getOrder().getTable().getTableNum());
         StringBuilder menuItemsText = new StringBuilder();
 
-        for (MenuItemOrdersDTO item : currentOrder.getOrderId().getMenuItemsOrders()) {
+        /*for (MenuItemOrdersDTO item : currentOrder.getOrderId().getMenuItemsOrders()) {
             String itemName = getMenuItemNameById(item.getItemId().getId());
 
             menuItemsText.append(itemName).append(" x ").append(item.getAmount()).append("\n");
         }
-        holder.menuItemsTextView.setText(menuItemsText.toString().trim());
+        holder.menuItemsTextView.setText(menuItemsText.toString().trim());*/
     }
 
     /**

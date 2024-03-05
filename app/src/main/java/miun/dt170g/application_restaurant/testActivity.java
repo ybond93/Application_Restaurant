@@ -17,7 +17,6 @@ import miun.dt170g.application_restaurant.Adapters.AlacarteMenuAdapter;
 import miun.dt170g.application_restaurant.Adapters.OrdersAdapter;
 import miun.dt170g.application_restaurant.entities.AlacarteMenuItem;
 import miun.dt170g.application_restaurant.entities.MenuItemOrdersDTO;
-import miun.dt170g.application_restaurant.entities.Order;
 import miun.dt170g.application_restaurant.retrofit.RetrofitClient;
 import miun.dt170g.application_restaurant.retrofit.RetrofitInterface;
 import retrofit2.Call;
@@ -84,8 +83,8 @@ public class testActivity extends AppCompatActivity {
                     // Only after this, fetch orders
                     fetchOrders();
                 } else {
-                    Log.e("API Error", "Error: " + response.code());
-                    Log.e("API Error", "Forbidden: " + response.message());
+                    Log.e("fetchAlacarteMenuItems", "Error: " + response.code());
+                    Log.e("fetchAlacarteMenuItems", "Forbidden: " + response.message());
                 }
             }
 

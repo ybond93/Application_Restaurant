@@ -10,21 +10,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import miun.dt170g.application_restaurant.entities.MenuItemOrdersDTO;
-import miun.dt170g.application_restaurant.entities.OrderItem;
 import miun.dt170g.application_restaurant.R;
 import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import miun.dt170g.application_restaurant.entities.AlacarteMenuItem;
-import miun.dt170g.application_restaurant.entities.Order;
-
-import java.util.List;
 
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewHolder> {
 

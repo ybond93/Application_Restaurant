@@ -1,7 +1,6 @@
 package miun.dt170g.application_restaurant.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import miun.dt170g.application_restaurant.R; // Make sure you import R from your project
 import miun.dt170g.application_restaurant.RecyclerViewInterface;
 import miun.dt170g.application_restaurant.Table_list_Activity;
-import miun.dt170g.application_restaurant.entities.Table;
 
 public class TableListAdapter extends RecyclerView.Adapter<TableListAdapter.TableViewHolder> {
 

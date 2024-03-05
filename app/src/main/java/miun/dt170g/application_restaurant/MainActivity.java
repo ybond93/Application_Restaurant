@@ -47,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
         RetrofitInterface apiData = RetrofitClient.create();
 
 
-        /*
         // Inserting order(MenuItemOrdersDTO) test
+        /*
         MenuItemsDTO menuItemsDTO = new MenuItemsDTO(1, "Caesar Salad", 7.99);
         TablesDTO tablesDTO = new TablesDTO(10, "busy");
         OrdersDTO ordersDTO = new OrdersDTO(0,"Idle", tablesDTO);
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
-        Call<ArrayList<Order>> orderApi = apiData.getOrder();
+        /*Call<ArrayList<Order>> orderApi = apiData.getOrder();
         orderApi.enqueue(new Callback<ArrayList<Order>>() {
             @Override
             public void onResponse(Call<ArrayList<Order>> call, Response<ArrayList<Order>> response) {
@@ -95,10 +95,10 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.e("API Error", "Failed to fetch data", t);
             }
-        });
+        });*/
 
 
-        /*Call<ArrayList<Employee>> employeeApi = apiData.getEmployee();
+        Call<ArrayList<Employee>> employeeApi = apiData.getEmployee();
         employeeApi.enqueue(new Callback<ArrayList<Employee>>() {
             @Override
             public void onResponse(Call<ArrayList<Employee>> call, Response<ArrayList<Employee>> response) {
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
                     recyclerView.setAdapter(adapter);
-                    Log.e("Success", "Successfully fetched employees: " + response.body().size());
+                    Log.d("Success", "Successfully fetched employees: " + response.body().size());
                 } else {
                     Log.e("API Error", "Error: " + response.code());
                 }
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call<ArrayList<Employee>> call, Throwable t) {
                 Log.e("API Error", "Failed to fetch data", t);
             }
-        });*/
+        });
     }
 }
 

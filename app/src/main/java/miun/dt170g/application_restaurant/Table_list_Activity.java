@@ -18,7 +18,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import miun.dt170g.application_restaurant.Adapters.TableListAdapter;
-import miun.dt170g.application_restaurant.entities.Table;
 import miun.dt170g.application_restaurant.retrofit.RetrofitClient;
 import miun.dt170g.application_restaurant.retrofit.RetrofitInterface;
 
@@ -51,7 +50,8 @@ public class Table_list_Activity extends AppCompatActivity  {
                     // Initialize and set adapter with fetched tables
                     adapter = new TableListAdapter(Table_list_Activity.this, tables, position -> {
                         // First, update the table status
-                        updateTableStatus(tables.get(position).getTableNum());
+                        //updateTableStatus(tables.get(position).getTableNum());
+
 
                         // Then, navigate to MenuActivity with the table number
                         // Replace testActivity.class with MenuActivity.class if that's the actual class you meant
@@ -72,7 +72,7 @@ public class Table_list_Activity extends AppCompatActivity  {
             }
         });
     }
-    private void updateTableStatus(int tableNumber) {
+    /*private void updateTableStatus(int tableNumber) {
         List<Integer> tt = new ArrayList<>(); // Assuming tt is needed for your logic
         Table temp = new Table(tableNumber, "In Progress", tt); // Adjust the Table constructor as per your actual Table class
 
@@ -94,7 +94,7 @@ public class Table_list_Activity extends AppCompatActivity  {
                 Log.e("UpdateTableFailure", "Failed to update table", t);
             }
         });
-    }
+    }*/
     public void updateTableStatus(int tableNumber, String newStatus) {
         List<Integer> tt = new ArrayList<>(); // Adjust as needed for your API
         Table temp = new Table(tableNumber, newStatus, tt); // Adjust constructor as needed

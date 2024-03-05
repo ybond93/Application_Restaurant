@@ -16,6 +16,7 @@ import java.util.Set;
 
 import miun.dt170g.application_restaurant.RecyclerViewInterface;
 import miun.dt170g.application_restaurant.Table_list_Activity;
+import miun.dt170g.application_restaurant.entities.Table;
 
 public class TableListAdapter extends RecyclerView.Adapter<TableListAdapter.TableViewHolder> {
 
@@ -66,7 +67,7 @@ public class TableListAdapter extends RecyclerView.Adapter<TableListAdapter.Tabl
         });
 
         // Set long click listener for the itemView for status change
-        holder.itemView.setOnLongClickListener(v -> {
+       /* holder.itemView.setOnLongClickListener(v -> {
             // Determine the new status
             String newStatus = currentTable.getStatus().equals("Inactive") ? "Active" : "Inactive";
             currentTable.setStatus(newStatus); // Locally update the status
@@ -83,7 +84,7 @@ public class TableListAdapter extends RecyclerView.Adapter<TableListAdapter.Tabl
             }
 
             return true; // Indicate that the callback consumed the long click
-        });
+        });*/
     }
 
 

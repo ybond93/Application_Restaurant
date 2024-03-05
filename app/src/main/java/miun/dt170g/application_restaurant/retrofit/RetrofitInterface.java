@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import miun.dt170g.application_restaurant.entities.AlacarteMenuItem;
 import miun.dt170g.application_restaurant.entities.Employee;
 import miun.dt170g.application_restaurant.entities.MenuItemOrdersDTO;
+import miun.dt170g.application_restaurant.entities.Order;
+import miun.dt170g.application_restaurant.entities.Table;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;

@@ -6,14 +6,14 @@ import java.util.List;
 public class OrdersDTO {
 
     private int orderId;
-    private String status;
+    private Boolean statusOrder;
     private TablesDTO table;
 
     public OrdersDTO(){};
 
-    public OrdersDTO(int orderId, String status, TablesDTO table) {
+    public OrdersDTO(int orderId, Boolean statusOrder, TablesDTO table) {
         this.orderId = orderId;
-        this.status = status;
+        this.statusOrder = statusOrder;
         this.table = table;
     }
 
@@ -25,12 +25,12 @@ public class OrdersDTO {
         this.orderId = orderId;
     }
 
-    public String getStatus() {
-        return status;
+    public Boolean getStatusOrder() {
+        return statusOrder;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatusOrder(Boolean statusOrder) {
+        this.statusOrder = statusOrder;
     }
 
     public TablesDTO getTable() {

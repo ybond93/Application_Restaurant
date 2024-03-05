@@ -48,10 +48,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Inserting order(MenuItemOrdersDTO) test
-        /*
-        MenuItemsDTO menuItemsDTO = new MenuItemsDTO(1, "Caesar Salad", 7.99);
-        TablesDTO tablesDTO = new TablesDTO(10, "busy");
-        OrdersDTO ordersDTO = new OrdersDTO(0,"Idle", tablesDTO);
+
+        MenuItemsDTO menuItemsDTO = new MenuItemsDTO(10, "Caesar Salad", 7.99);
+        TablesDTO tablesDTO = new TablesDTO(10, true);
+        OrdersDTO ordersDTO = new OrdersDTO(0,true, tablesDTO);
         MenuItemOrdersDTO menuItemOrdersDTO = new MenuItemOrdersDTO(menuItemsDTO, ordersDTO, 8);
 
 
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 // Handle failure
                 Log.e("API Error", "Failed to send order", t);
             }
-        });*/
+        });
 
         /*Call<ArrayList<Order>> orderApi = apiData.getOrder();
         orderApi.enqueue(new Callback<ArrayList<Order>>() {

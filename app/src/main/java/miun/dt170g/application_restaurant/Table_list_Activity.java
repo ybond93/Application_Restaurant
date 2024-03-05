@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import miun.dt170g.application_restaurant.entities.Table;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -95,7 +96,7 @@ public class Table_list_Activity extends AppCompatActivity  {
             }
         });
     }*/
-    public void updateTableStatus(int tableNumber, String newStatus) {
+    public void updateTableStatus(int tableNumber, Boolean newStatus) {
         List<Integer> tt = new ArrayList<>(); // Adjust as needed for your API
         Table temp = new Table(tableNumber, newStatus, tt); // Adjust constructor as needed
 

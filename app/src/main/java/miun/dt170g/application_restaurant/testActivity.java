@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 import miun.dt170g.application_restaurant.Adapters.AlacarteMenuAdapter;
 import miun.dt170g.application_restaurant.Adapters.OrdersAdapter;
 import miun.dt170g.application_restaurant.entities.AlacarteMenuItem;
-import miun.dt170g.application_restaurant.entities.Order;
+import miun.dt170g.application_restaurant.entities.MenuItemOrdersDTO;
 import miun.dt170g.application_restaurant.retrofit.RetrofitClient;
 import miun.dt170g.application_restaurant.retrofit.RetrofitInterface;
 import retrofit2.Call;
@@ -26,8 +26,8 @@ public class testActivity extends AppCompatActivity {
 
     private RecyclerView recyclerViewDrinks, recyclerViewMains, recyclerViewStarters, recyclerViewDesserts, recyclerViewOrders;
     private TextView headerDrinks, headerMains, headerStarters, headerDesserts, headerOrders;
-    private OrdersAdapter orderAdapter;
-    private List<Order> ordersList = new ArrayList<>(); // Placeholder for orders data
+    private OrdersAdapter ordersAdapter;
+    private List<MenuItemOrdersDTO> ordersList = new ArrayList<>();
     private int selectedTableNumber; // Variable to hold the selected table number
 
     @Override
@@ -35,26 +35,11 @@ public class testActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
         selectedTableNumber = getIntent().getIntExtra("selectedTableNumber", -1);
-        // Initialize RecyclerViews and Headers
         initViews();
-        // Set click listeners for headers
         setHeaderClickListeners();
-// Set Layout Managers for RecyclerViews
         setupRecyclerViews();
-        // Fetch A La Carte Menu Items
         fetchAlacarteMenuItems();
-        // Fetch Orders
         fetchOrders();
-        // Set Layout Managers for RecyclerViews
-        recyclerViewDrinks.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewMains.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewStarters.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewDesserts.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewOrders.setLayoutManager(new LinearLayoutManager(this)); // Set LayoutManager for Orders RecyclerView
-// Initialize the OrderAdapter with an empty list
-        orderAdapter = new OrdersAdapter(this, ordersList, new ArrayList<>()); // Assuming you will provide the list of all menu items later
-        recyclerViewOrders.setAdapter(orderAdapter);
-
     }
 
     private void fetchAlacarteMenuItems() {
@@ -79,7 +64,7 @@ public class testActivity extends AppCompatActivity {
                     updateRecyclerView(recyclerViewMains, mains);
                     updateRecyclerView(recyclerViewStarters, starters);
                     updateRecyclerView(recyclerViewDesserts, desserts);
-                    orderAdapter.setAllMenuItems(alacarteMenuItemList);
+                    ordersAdapter.setAllMenuItems(alacarteMenuItemList);
                     // Only after this, fetch orders
                     fetchOrders();
                 } else {
@@ -96,6 +81,46 @@ public class testActivity extends AppCompatActivity {
         });
     }
 
+
+
+    private void fetchOrders() {
+        RetrofitInterface apiData = RetrofitClient.create();
+        Call<ArrayList<MenuItemOrdersDTO>> orderApi = apiData.getMenuItemOrdersDTO();
+        orderApi.enqueue(new Callback<ArrayList<MenuItemOrdersDTO>>() {
+            @Override
+            public void onResponse(Call<ArrayList<MenuItemOrdersDTO>> call, Response<ArrayList<MenuItemOrdersDTO>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ArrayList<MenuItemOrdersDTO> allOrders = response.body();
+                    List<MenuItemOrdersDTO> filteredOrders = allOrders.stream()
+                            .filter(order -> order.getOrderId().getTableNum().getTableNum() == selectedTableNumber)
+                            .collect(Collectors.toList());
+                    ordersAdapter.updateOrders(filteredOrders);
+                    ordersAdapter.updateOrders(allOrders);
+                } else {
+                    Log.e("API Error", "Error: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<MenuItemOrdersDTO>> call, Throwable t) {
+                Log.e("API Error", "Failed to fetch orders", t);
+            }
+        });
+    }
+
+
+    private void initViews() {
+        recyclerViewDrinks = findViewById(R.id.recyclerViewDrinks);
+        recyclerViewMains = findViewById(R.id.recyclerViewMains);
+        recyclerViewStarters = findViewById(R.id.recyclerViewStarters);
+        recyclerViewDesserts = findViewById(R.id.recyclerViewDesserts);
+        recyclerViewOrders = findViewById(R.id.recyclerViewOrders);
+        headerDrinks = findViewById(R.id.headerDrinks);
+        headerMains = findViewById(R.id.headerMains);
+        headerStarters = findViewById(R.id.headerStarters);
+        headerDesserts = findViewById(R.id.headerDesserts);
+        headerOrders = findViewById(R.id.headerOrders);
+    }
     private void setupRecyclerViews() {
         recyclerViewDrinks.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewMains.setLayoutManager(new LinearLayoutManager(this));
@@ -103,60 +128,9 @@ public class testActivity extends AppCompatActivity {
         recyclerViewDesserts.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewOrders.setLayoutManager(new LinearLayoutManager(this)); // Set LayoutManager for Orders RecyclerView
         // Initialize the OrderAdapter with an empty list initially
-        orderAdapter = new OrdersAdapter(this, new ArrayList<>(), new ArrayList<>());
-        recyclerViewOrders.setAdapter(orderAdapter);
+        ordersAdapter = new OrdersAdapter(this, ordersList);
+        recyclerViewOrders.setAdapter(ordersAdapter);
     }
-
-    private void fetchOrders() {
-        RetrofitInterface apiData = RetrofitClient.create();
-        Call<ArrayList<Order>> orderApi = apiData.getOrder();
-        orderApi.enqueue(new Callback<ArrayList<Order>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Order>> call, Response<ArrayList<Order>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    ArrayList<Order> allOrders = response.body();
-                    List<Order> filteredOrders = allOrders.stream()
-                            .filter(order -> order.getTableNum() == selectedTableNumber)
-                            .collect(Collectors.toList());
-
-                    // Update the OrderAdapter with filtered orders
-                    //orderAdapter.updateOrders(filteredOrders); // Use the filtered list here
-
-                    // Update the OrderAdapter with all fetched orders
-                    orderAdapter.updateOrders(allOrders); // This line is crucial
-
-                    Log.d("API Success", "Successfully fetched orders");
-                } else {
-                    Log.e("API Error", "Error: " + response.code());
-                    Log.e("API Error", "Message: " + response.message());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<Order>> call, Throwable t) {
-                Log.e("API Error", "Failed to fetch orders", t);
-            }
-        });
-    }
-
-    private void initViews() {
-        // Initialize RecyclerViews
-        recyclerViewDrinks = findViewById(R.id.recyclerViewDrinks);
-        recyclerViewMains = findViewById(R.id.recyclerViewMains);
-        recyclerViewStarters = findViewById(R.id.recyclerViewStarters);
-        recyclerViewDesserts = findViewById(R.id.recyclerViewDesserts);
-        recyclerViewOrders = findViewById(R.id.recyclerViewOrders); // Ensure this ID matches your layout XML
-
-        // Initialize Headers
-        headerDrinks = findViewById(R.id.headerDrinks);
-        headerMains = findViewById(R.id.headerMains);
-        headerStarters = findViewById(R.id.headerStarters);
-        headerDesserts = findViewById(R.id.headerDesserts);
-        headerOrders = findViewById(R.id.headerOrders);
-
-
-    }
-
     private void setHeaderClickListeners() {
         headerDrinks.setOnClickListener(v -> toggleRecyclerViewVisibility(recyclerViewDrinks));
         headerMains.setOnClickListener(v -> toggleRecyclerViewVisibility(recyclerViewMains));

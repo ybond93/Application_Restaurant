@@ -1,5 +1,6 @@
 package miun.dt170g.application_restaurant.Adapters;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,79 +9,71 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
-import miun.dt170g.application_restaurant.entities.OrderItem;
 import miun.dt170g.application_restaurant.R;
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import miun.dt170g.application_restaurant.entities.AlacarteMenuItem;
-import miun.dt170g.application_restaurant.entities.Order;
+import miun.dt170g.application_restaurant.entities.MenuItemOrdersDTO;
+import miun.dt170g.application_restaurant.entities.MenuItemsDTO;
+import miun.dt170g.application_restaurant.entities.OrdersDTO;
 
-import java.util.List;
+public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MenuItemOrderViewHolder> {
 
-public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewHolder> {
-
-    private List<Order> orderList;
+    private final List<MenuItemOrdersDTO> menuItemOrdersList;
+    private final LayoutInflater inflater;
     private List<AlacarteMenuItem> allMenuItems; // List to hold all menu items
-    private LayoutInflater inflater;
 
-    public OrdersAdapter(Context context, List<Order> orderList, List<AlacarteMenuItem> allMenuItems) {
+
+    public OrdersAdapter(Context context, List<MenuItemOrdersDTO> menuItemOrdersList) {
         this.inflater = LayoutInflater.from(context);
-        this.orderList = orderList;
-        this.allMenuItems = allMenuItems; // Initialize with the provided list
+        this.menuItemOrdersList = menuItemOrdersList;
     }
 
     @NonNull
     @Override
-    public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MenuItemOrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = inflater.inflate(R.layout.order_item, parent, false);
-        return new OrderViewHolder(itemView);
+        return new MenuItemOrderViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
-        Order currentOrder = orderList.get(position);
-        holder.tableNumberTextView.setText("Table: " + currentOrder.getTableNum());
-        StringBuilder menuItemsText = new StringBuilder();
-        for (Order.MenuItemQuantityDTO item : currentOrder.getMenuItemQuantities()) {
-            String itemName = getMenuItemNameById(item.getMenuItemId());
-            menuItemsText.append(itemName).append(" x ").append(item.getAmount()).append("\n");
-        }
-        holder.menuItemsTextView.setText(menuItemsText.toString().trim());
-    }
-    public void updateMenuItems(List<AlacarteMenuItem> newMenuItems) {
-        this.allMenuItems.clear();
-        this.allMenuItems.addAll(newMenuItems);
-        notifyDataSetChanged(); // Only if you want to refresh the whole adapter, might not be necessary
-    }
-    public void setAllMenuItems(List<AlacarteMenuItem> allMenuItems) {
-        this.allMenuItems = allMenuItems;
+    public void onBindViewHolder(@NonNull MenuItemOrderViewHolder holder, int position) {
+        MenuItemOrdersDTO currentOrder = menuItemOrdersList.get(position);
+        MenuItemsDTO menuItem = currentOrder.getItemId();
+        OrdersDTO order = currentOrder.getOrderId();
+
+        holder.menuItemNameTextView.setText(menuItem.getName());
+        holder.menuItemAmountTextView.setText(String.valueOf(currentOrder.getAmount()));
+        holder.menuItemPriceTextView.setText(String.format("$%.2f", menuItem.getPrice()));
+        holder.orderIdTextView.setText(String.format("Order ID: %d", order.getOrderId()));
+        // Additional fields can be set here if required
     }
 
     @Override
     public int getItemCount() {
-        return orderList.size();
+        return menuItemOrdersList.size();
     }
 
-    static class OrderViewHolder extends RecyclerView.ViewHolder {
-        TextView tableNumberTextView, menuItemsTextView;
+    static class MenuItemOrderViewHolder extends RecyclerView.ViewHolder {
+        TextView menuItemNameTextView, menuItemAmountTextView, menuItemPriceTextView, orderIdTextView;
 
-        public OrderViewHolder(@NonNull View itemView) {
+        public MenuItemOrderViewHolder(@NonNull View itemView) {
             super(itemView);
-            tableNumberTextView = itemView.findViewById(R.id.tableNumberTextView);
-            menuItemsTextView = itemView.findViewById(R.id.order_item_name);
+            menuItemNameTextView = itemView.findViewById(R.id.order_item_name);
+            menuItemAmountTextView = itemView.findViewById(R.id.order_item_quantity);
+            menuItemPriceTextView = itemView.findViewById(R.id.menuItemPriceTextView);
+            orderIdTextView = itemView.findViewById(R.id.orderIdTextView);
+
         }
     }
-    public void updateOrders(List<Order> newOrders) {
-        this.orderList.clear();
-        this.orderList.addAll(newOrders);
+
+    // Optionally, you can include methods to update the dataset e.g., add, remove, update items
+
+    public void updateOrders(List<MenuItemOrdersDTO> newOrders) {
+        this.menuItemOrdersList.clear();
+        this.menuItemOrdersList.addAll(newOrders);
         notifyDataSetChanged();
+    }
+    public void setAllMenuItems(List<AlacarteMenuItem> allMenuItems) {
+        this.allMenuItems = allMenuItems;
     }
     private String getMenuItemNameById(int id) {
         for (AlacarteMenuItem item : allMenuItems) {

@@ -24,21 +24,24 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
     private final ArrayList<Employee> employeeList;
     private final RecyclerViewInterface recyclerViewInterface;
 
-    // Constructor
+    // Constructor: Initializes the adapter with the required parameters
     public EmployeeAdapter(Context context, ArrayList<Employee> employeeList, RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
         this.employeeList = employeeList;
         this.recyclerViewInterface = recyclerViewInterface;
     }
 
+
     @NonNull
     @Override
+    //Fill the layout for each item in RecyclerView
     public EmployeeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_1, parent, false);
         return new EmployeeViewHolder(view, recyclerViewInterface);
     }
 
     @Override
+    //Binds data to the View
     public void onBindViewHolder(@NonNull EmployeeViewHolder holder, int position) {
         Employee currentEmployee = employeeList.get(position);
         String fullName = currentEmployee.getFirstName() + " " + currentEmployee.getLastName();
@@ -52,13 +55,14 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
     }
 
     @Override
+    //getter
     public int getItemCount() {
         return employeeList.size();
     }
 
     public static class EmployeeViewHolder extends RecyclerView.ViewHolder {
         TextView employeeName;
-
+        //set onitemclick
         public EmployeeViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
             employeeName = itemView.findViewById(android.R.id.text1); // Using simple_list_item_1's TextView

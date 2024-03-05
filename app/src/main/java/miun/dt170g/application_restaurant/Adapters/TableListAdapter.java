@@ -28,7 +28,6 @@ public class TableListAdapter extends RecyclerView.Adapter<TableListAdapter.Tabl
     private final Set<String> activeOrders; // Track tables with active orders
 
     // Constructor
-    // Constructor adjustment
     public TableListAdapter(Context context, List<Table> tableList, RecyclerViewInterface recyclerViewInterface, Set<String> activeOrders) {
         this.context = context;
         this.tableList = new ArrayList<>(tableList); // Adapt here
@@ -46,13 +45,16 @@ public class TableListAdapter extends RecyclerView.Adapter<TableListAdapter.Tabl
 
     @NonNull
     @Override
+    //fill the recyclerView
     public TableListAdapter.TableViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_1, parent, false);
         return new TableViewHolder(view);
     }
 
     @Override
+    //binds data
     public void onBindViewHolder(@NonNull TableListAdapter.TableViewHolder holder, int position) {
+        //set table number to textView
         Table currentTable = tableList.get(position);
         String tableDisplay = "Table " + currentTable.getTableNum(); // Displaying table number
         holder.tableName.setText(tableDisplay);
@@ -92,10 +94,12 @@ public class TableListAdapter extends RecyclerView.Adapter<TableListAdapter.Tabl
 
 
     @Override
+    //getter
     public int getItemCount() {
         return tableList.size();
     }
 
+    //display the table name in TextView
     public static class TableViewHolder extends RecyclerView.ViewHolder {
         TextView tableName;
 

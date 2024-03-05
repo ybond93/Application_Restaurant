@@ -28,6 +28,7 @@ public class Table_list_Activity extends AppCompatActivity  {
     private Set<String> activeOrders = new HashSet<>();
 
     @Override
+    //initializes the recyclerView and fetch list of tables using retorfit
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table_list); // Ensure you have a corresponding layout
@@ -38,6 +39,7 @@ public class Table_list_Activity extends AppCompatActivity  {
         fetchTables();
     }
 
+    //fetch
     private void fetchTables() {
         RetrofitInterface apiService = RetrofitClient.create();
         Call<ArrayList<Table>> call = apiService.getTable(); // Assuming getTable() is correctly implemented in your Retrofit interface
@@ -58,6 +60,7 @@ public class Table_list_Activity extends AppCompatActivity  {
                         intent.putExtra("tableNumber", tables.get(position).getTableNum());
                         startActivity(intent);
                     }, activeOrders);
+
                     recyclerView.setAdapter(adapter);
                     Log.e("Success", "Successfully fetched tables: " + tables.size());
                 } else {

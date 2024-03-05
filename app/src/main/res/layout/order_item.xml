@@ -25,12 +25,32 @@
         android:textSize="18sp"
          />
     <TextView
+        android:id="@+id/menuItemPriceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="visible"
+
+        android:textSize="18sp"
+        />
+    <TextView
+        android:id="@+id/orderIdTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"
+        android:textSize="18sp"
+        />
+    <TextView
         android:id="@+id/tableNumberTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:textSize="18sp"
+        android:visibility="gone"
         android:text="TN" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

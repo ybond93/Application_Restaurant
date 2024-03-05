@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,8 @@ import miun.dt170g.application_restaurant.Adapters.AlacarteMenuAdapter;
 import miun.dt170g.application_restaurant.Adapters.OrdersAdapter;
 import miun.dt170g.application_restaurant.entities.AlacarteMenuItem;
 import miun.dt170g.application_restaurant.entities.MenuItemOrdersDTO;
+import miun.dt170g.application_restaurant.entities.MenuItemsDTO;
+import miun.dt170g.application_restaurant.entities.OrdersDTO;
 import miun.dt170g.application_restaurant.retrofit.RetrofitClient;
 import miun.dt170g.application_restaurant.retrofit.RetrofitInterface;
 import retrofit2.Call;
@@ -42,6 +45,11 @@ public class testActivity extends AppCompatActivity {
         fetchOrders();
     }
 
+    /*
+     * FETCHES ALL MENU ITEMS FROM THE API ENDPOINT
+     * /api/alacartemenuitem USING THE @GET METHOD
+     * "getAlacarteMenuItem()"
+     */
     private void fetchAlacarteMenuItems() {
         RetrofitInterface apiData = RetrofitClient.create();
         Call<ArrayList<AlacarteMenuItem>> alacarteMenuItemApi = apiData.getAlacarteMenuItem();
@@ -66,13 +74,28 @@ public class testActivity extends AppCompatActivity {
                     updateRecyclerView(recyclerViewDesserts, desserts);
                     ordersAdapter.setAllMenuItems(alacarteMenuItemList);
                     // Only after this, fetch orders
-                    fetchOrders();
+
+                    // A La Carte and Orders in the same onResponse?
+
+                    /*
+                    menuItem.setOnClickListener() {
+                        MenuItemsDTO mi_dto;
+                        mi_dto.setName(menuItem.getName());
+
+                        OrdersDTO o_dto;
+                        o_dto.setAmount(menuItem.getAmount());
+                    }
+
+                    place(o_dto, mi_dto);
+
+                     */
+
+                    // fetchOrders();
                 } else {
                     Log.e("API Error", "Error: " + response.code());
                     Log.e("API Error", "Forbidden: " + response.message());
                 }
             }
-
 
             @Override
             public void onFailure(Call<ArrayList<AlacarteMenuItem>> call, Throwable t) {
@@ -81,6 +104,42 @@ public class testActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * This method sends a POST request to the
+     * api endpoint /api/menuitemorder/ through the
+     * "addTableOrder(@param MenuItemOrdersDTO)" method.
+     * The payload to be sent in the POST request
+     * is a MenuItemOrdersDTO object, which is composed of:
+     * @param o_dto The curated orders object
+     * @param mi_dto The curated menuitem object
+     */
+    private void placeOrder(OrdersDTO o_dto, MenuItemsDTO mi_dto) {
+        RetrofitInterface apiService = RetrofitClient.create();
+
+        MenuItemOrdersDTO mio_dto = new MenuItemOrdersDTO();
+        mio_dto.setOrder(o_dto);
+        mio_dto.setMenuItem(mi_dto);
+
+        // Make the POST request
+        Call<MenuItemOrdersDTO> call = apiService.addTableOrder(mio_dto);
+        call.enqueue(new Callback<MenuItemOrdersDTO>() {
+            @Override
+            public void onResponse(Call<MenuItemOrdersDTO> call, Response<MenuItemOrdersDTO> response) {
+                if (response.isSuccessful()) {
+                    // Handle the successful response here
+                    Toast.makeText(testActivity.this, "Order placed successfully!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Handle request errors here
+                    Toast.makeText(testActivity.this, "Order placement failed: " + response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<MenuItemOrdersDTO> call, Throwable t) {
+                // Handle the failure here, e.g., network error, etc.
+                Toast.makeText(testActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
 
     private void fetchOrders() {
@@ -92,7 +151,7 @@ public class testActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     ArrayList<MenuItemOrdersDTO> allOrders = response.body();
                     List<MenuItemOrdersDTO> filteredOrders = allOrders.stream()
-                            .filter(order -> order.getOrderId().getTableNum().getTableNum() == selectedTableNumber)
+                            .filter(mio_dto -> mio_dto.getOrder().getTable().getTableNum() == selectedTableNumber)
                             .collect(Collectors.toList());
                     ordersAdapter.updateOrders(filteredOrders);
                     ordersAdapter.updateOrders(allOrders);

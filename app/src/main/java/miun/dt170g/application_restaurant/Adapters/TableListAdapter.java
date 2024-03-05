@@ -73,7 +73,7 @@ public class TableListAdapter extends RecyclerView.Adapter<TableListAdapter.Tabl
         // Set long click listener for the itemView for status change
         holder.itemView.setOnLongClickListener(v -> {
             // Determine the new status
-            String newStatus = currentTable.getStatus().equals("Inactive") ? "Active" : "Inactive";
+            Boolean newStatus = currentTable.getStatus().equals(false) ? true : false;
             currentTable.setStatus(newStatus); // Locally update the status
 
             // Optionally, call the method to update the status on the server
@@ -91,8 +91,6 @@ public class TableListAdapter extends RecyclerView.Adapter<TableListAdapter.Tabl
         });
     }
 
-
-
     @Override
     //getter
     public int getItemCount() {
@@ -108,6 +106,5 @@ public class TableListAdapter extends RecyclerView.Adapter<TableListAdapter.Tabl
             tableName = itemView.findViewById(android.R.id.text1);
         }
     }
-
 
 }

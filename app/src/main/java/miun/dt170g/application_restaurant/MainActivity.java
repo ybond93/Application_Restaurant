@@ -38,6 +38,11 @@ public class MainActivity extends AppCompatActivity {
         fetchEmployees();
     }
 
+    /*
+     * METHOD FOR FETCHING THE EMPLOYEE DATA FROM THE
+     * API ENDPOINT /api/employees USING THE @GET METHOD
+     * "getEmployee()"
+     */
     private void fetchEmployees() {
         RetrofitInterface apiData = RetrofitClient.create();
         Call<ArrayList<Employee>> employeeApi = apiData.getEmployee();

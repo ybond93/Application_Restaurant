@@ -39,7 +39,11 @@ public class Table_list_Activity extends AppCompatActivity  {
         fetchTables();
     }
 
-    //fetch
+
+    /*
+     * METHOD FOR FETCHING THE TABLE DATA FROM THE API ENDPOINT
+     * /api/tables USING THE @GET method 'getTable()'
+     */
     private void fetchTables() {
         RetrofitInterface apiService = RetrofitClient.create();
         Call<ArrayList<Table>> call = apiService.getTable(); // Assuming getTable() is correctly implemented in your Retrofit interface
@@ -56,6 +60,7 @@ public class Table_list_Activity extends AppCompatActivity  {
 
                         // Then, navigate to MenuActivity with the table number
                         // Replace testActivity.class with MenuActivity.class if that's the actual class you meant
+                        // onItemClick
                         Intent intent = new Intent(Table_list_Activity.this, testActivity.class);
                         intent.putExtra("tableNumber", tables.get(position).getTableNum());
                         startActivity(intent);
@@ -74,9 +79,13 @@ public class Table_list_Activity extends AppCompatActivity  {
             }
         });
     }
+
+    /**
+     * USES THE @GET METHOD "updateTableStatus(tableNumber, temp)"
+     */
     private void updateTableStatus(int tableNumber) {
         List<Integer> tt = new ArrayList<>(); // Assuming tt is needed for your logic
-        Table temp = new Table(tableNumber, "In Progress", tt); // Adjust the Table constructor as per your actual Table class
+        Table temp = new Table(tableNumber, false, tt); // Adjust the Table constructor as per your actual Table class
 
         RetrofitInterface apiData = RetrofitClient.create();
         Call<Table> call = apiData.updateTableStatus(tableNumber, temp);
@@ -97,7 +106,7 @@ public class Table_list_Activity extends AppCompatActivity  {
             }
         });
     }
-    public void updateTableStatus(int tableNumber, String newStatus) {
+    public void updateTableStatus(int tableNumber, Boolean newStatus) {
         List<Integer> tt = new ArrayList<>(); // Adjust as needed for your API
         Table temp = new Table(tableNumber, newStatus, tt); // Adjust constructor as needed
 

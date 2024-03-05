@@ -4,33 +4,28 @@ import java.util.List;
 
 public class TablesDTO {
     private int tableNum;
-    private String Status;
-    private List<OrdersDTO> orders;
+    private Boolean status;
 
+    public TablesDTO(){};
 
+    public TablesDTO(int tableNum, Boolean status) {
+        this.tableNum = tableNum;
+        this.status = status;
+    }
 
     public int getTableNum() {
         return tableNum;
     }
 
-
-    public String getStatus() {
-        return Status;
-    }
-
-    public void setOrders(List<OrdersDTO> orders) {
-        this.orders = orders;
-    }
-
-    public List<OrdersDTO> getOrders() {
-        return orders;
-    }
-
-    public void setStatus(String status) {
-        Status = status;
-    }
-
     public void setTableNum(int tableNum) {
         this.tableNum = tableNum;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 }

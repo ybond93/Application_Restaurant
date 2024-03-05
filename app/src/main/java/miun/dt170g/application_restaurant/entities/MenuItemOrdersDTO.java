@@ -1,31 +1,38 @@
 package miun.dt170g.application_restaurant.entities;
 
 public class MenuItemOrdersDTO {
-    private MenuItemsDTO itemId;
-    private OrdersDTO orderId;
+    private MenuItemsDTO menuItem;
+    private OrdersDTO order;
     private  int amount;
 
-    public void setOrderId(OrdersDTO orderId) {
-        this.orderId = orderId;
-    }
-
-    public void setAmount(int amount) {
+    public MenuItemOrdersDTO(){};
+    public MenuItemOrdersDTO(MenuItemsDTO menuItem, OrdersDTO order, int amount) {
+        this.menuItem = menuItem;
+        this.order = order;
         this.amount = amount;
     }
 
-    public void setItemId(MenuItemsDTO itemId) {
-        this.itemId = itemId;
+    public MenuItemsDTO getMenuItem() {
+        return menuItem;
     }
 
-    public OrdersDTO getOrderId() {
-        return orderId;
+    public void setMenuItem(MenuItemsDTO menuItem) {
+        this.menuItem = menuItem;
+    }
+
+    public OrdersDTO getOrder() {
+        return order;
+    }
+
+    public void setOrder(OrdersDTO order) {
+        this.order = order;
     }
 
     public int getAmount() {
         return amount;
     }
 
-    public MenuItemsDTO getItemId() {
-        return itemId;
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 }

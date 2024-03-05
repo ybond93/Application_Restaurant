@@ -37,8 +37,8 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MenuItemOr
     @Override
     public void onBindViewHolder(@NonNull MenuItemOrderViewHolder holder, int position) {
         MenuItemOrdersDTO currentOrder = menuItemOrdersList.get(position);
-        MenuItemsDTO menuItem = currentOrder.getItemId();
-        OrdersDTO order = currentOrder.getOrderId();
+        MenuItemsDTO menuItem = currentOrder.getMenuItem();
+        OrdersDTO order = currentOrder.getOrder();
 
         holder.menuItemNameTextView.setText(menuItem.getName());
         holder.menuItemAmountTextView.setText(String.valueOf(currentOrder.getAmount()));

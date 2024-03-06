@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import miun.dt170g.application_restaurant.Adapters.AlacarteMenuAdapter;
+import miun.dt170g.application_restaurant.Adapters.ChildItemAdapter;
 import miun.dt170g.application_restaurant.Adapters.OrdersAdapter;
 import miun.dt170g.application_restaurant.entities.AlacarteMenuItem;
 import miun.dt170g.application_restaurant.entities.MenuItemOrdersDTO;
@@ -25,6 +26,7 @@ import miun.dt170g.application_restaurant.retrofit.RetrofitInterface;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 public class testActivity extends AppCompatActivity {
 
     private RecyclerView recyclerViewDrinks, recyclerViewMains, recyclerViewStarters, recyclerViewDesserts, recyclerViewOrders;
@@ -32,6 +34,7 @@ public class testActivity extends AppCompatActivity {
     private OrdersAdapter ordersAdapter;
     private List<MenuItemOrdersDTO> ordersList = new ArrayList<>();
     private int selectedTableNumber; // Variable to hold the selected table number
+    private OnItemClickListener itemClickListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,21 @@ public class testActivity extends AppCompatActivity {
         setHeaderClickListeners();
         setupRecyclerViews();
         fetchAlacarteMenuItems();
-        fetchOrders();
+
+        itemClickListener = (item, position) -> {
+            // Click event
+            Toast.makeText(testActivity.this, "Clicked: " + item.getMenuItem().getName(), Toast.LENGTH_SHORT).show();
+
+            // Place an order when a menu item is clicked
+            MenuItemsDTO mi_dto = new MenuItemsDTO();
+            mi_dto.setName(item.getMenuItem().getName());
+            OrdersDTO o_dto = new OrdersDTO();
+            o_dto.setStatusOrder(false);
+            // o_dto.getTable().setTableNum();
+
+            //placeOrder(o_dto, mi_dto);
+        };
+        // fetchOrders();
     }
 
     /*
@@ -73,22 +90,10 @@ public class testActivity extends AppCompatActivity {
                     updateRecyclerView(recyclerViewStarters, starters);
                     updateRecyclerView(recyclerViewDesserts, desserts);
                     ordersAdapter.setAllMenuItems(alacarteMenuItemList);
+
                     // Only after this, fetch orders
 
                     // A La Carte and Orders in the same onResponse?
-
-                    /*
-                    menuItem.setOnClickListener() {
-                        MenuItemsDTO mi_dto;
-                        mi_dto.setName(menuItem.getName());
-
-                        OrdersDTO o_dto;
-                        o_dto.setAmount(menuItem.getAmount());
-                    }
-
-                    place(o_dto, mi_dto);
-
-                     */
 
                     // fetchOrders();
                 } else {
@@ -119,6 +124,7 @@ public class testActivity extends AppCompatActivity {
         MenuItemOrdersDTO mio_dto = new MenuItemOrdersDTO();
         mio_dto.setOrder(o_dto);
         mio_dto.setMenuItem(mi_dto);
+        mio_dto.setAmount(3);
 
         // Make the POST request
         Call<MenuItemOrdersDTO> call = apiService.addTableOrder(mio_dto);
@@ -214,11 +220,14 @@ public class testActivity extends AppCompatActivity {
     }
 
     private void updateRecyclerView(RecyclerView recyclerView, List<AlacarteMenuItem> items) {
-        if (items != null && !items.isEmpty()) {
-            AlacarteMenuAdapter adapter = new AlacarteMenuAdapter(items);
+        AlacarteMenuAdapter adapter = (AlacarteMenuAdapter) recyclerView.getAdapter();
+        if (adapter == null) {
+            adapter = new AlacarteMenuAdapter(items, itemClickListener);
             recyclerView.setAdapter(adapter);
-        } else {
-            Log.d("UpdateRecyclerView", "Attempted to update RecyclerView with empty or null data.");
+        }
+        else {
+            adapter.setMenuItems(items);
+            adapter.notifyDataSetChanged();
         }
     }
 
@@ -243,7 +252,6 @@ public class testActivity extends AppCompatActivity {
         recyclerViewStarters.setVisibility(savedInstanceState.getInt("startersVisibility"));
         recyclerViewDesserts.setVisibility(savedInstanceState.getInt("dessertsVisibility"));
         recyclerViewOrders.setVisibility(savedInstanceState.getInt("ordersVisibility"));
-
     }
 
 }

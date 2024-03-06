@@ -31,7 +31,6 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
         this.recyclerViewInterface = recyclerViewInterface;
     }
 
-
     @NonNull
     @Override
     //Fill the layout for each item in RecyclerView

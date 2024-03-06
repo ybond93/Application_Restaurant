@@ -67,7 +67,6 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MenuItemOr
     }
 
     // Optionally, you can include methods to update the dataset e.g., add, remove, update items
-
     public void updateOrders(List<MenuItemOrdersDTO> newOrders) {
         this.menuItemOrdersList.clear();
         this.menuItemOrdersList.addAll(newOrders);

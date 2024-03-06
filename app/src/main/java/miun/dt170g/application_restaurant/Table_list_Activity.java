@@ -58,11 +58,10 @@ public class Table_list_Activity extends AppCompatActivity  {
                         // First, update the table status
                         updateTableStatus(tables.get(position).getTableNum());
 
-                        // Then, navigate to MenuActivity with the table number
-                        // Replace testActivity.class with MenuActivity.class if that's the actual class you meant
-                        // onItemClick
+                        // onItemClick functionality vvv
                         Intent intent = new Intent(Table_list_Activity.this, testActivity.class);
-                        intent.putExtra("tableNumber", tables.get(position).getTableNum());
+                        Integer selected_table_num = tables.get(position).getTableNum();
+                        intent.putExtra("selectedTableNumber", tables.get(position).getTableNum());
                         startActivity(intent);
                     }, activeOrders);
 

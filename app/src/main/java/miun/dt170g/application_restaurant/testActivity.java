@@ -54,10 +54,10 @@ public class testActivity extends AppCompatActivity {
             // Place an order when a menu item is clicked
             MenuItemsDTO mi_dto = new MenuItemsDTO();
             mi_dto.setName(item.getMenuItemName());
-            mi_dto.setId(45);
+            mi_dto.setId(item.getCarteItemId());
             OrdersDTO o_dto = new OrdersDTO();
             o_dto.setStatusOrder(false);
-            TablesDTO t_dto = new TablesDTO(7, false);
+            TablesDTO t_dto = new TablesDTO(selectedTableNumber, false);
             o_dto.setTable(t_dto);
             // o_dto.getTable().setTableNum();
 
@@ -134,10 +134,9 @@ public class testActivity extends AppCompatActivity {
                     ordersAdapter.setAllMenuItems(alacarteMenuItemList);
 
                     // Only after this, fetch orders
-
                     // A La Carte and Orders in the same onResponse?
 
-                    // fetchOrders();
+                    fetchOrders();
                 } else {
                     Log.e("API Error", "Error: " + response.code());
                     Log.e("API Error", "Forbidden: " + response.message());
@@ -163,7 +162,7 @@ public class testActivity extends AppCompatActivity {
                             .filter(mio_dto -> mio_dto.getOrder().getTable().getTableNum() == selectedTableNumber)
                             .collect(Collectors.toList());
                     ordersAdapter.updateOrders(filteredOrders);
-                    ordersAdapter.updateOrders(allOrders);
+                    // ordersAdapter.updateOrders(allOrders);
                 } else {
                     Log.e("API Error", "Error: " + response.code());
                 }
@@ -213,7 +212,6 @@ public class testActivity extends AppCompatActivity {
         recyclerView.setVisibility(recyclerView.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
         Log.d("ToggleVisibility", tag + " - New visibility (after): " + (recyclerView.getVisibility() == View.GONE ? "GONE" : "VISIBLE"));
     }
-
 
     private List<AlacarteMenuItemsDTO> filterItemsByCategory(List<AlacarteMenuItemsDTO> items, String category) {
         return items.stream()

@@ -21,6 +21,7 @@ import miun.dt170g.application_restaurant.entities.AlacarteMenuItem;
 import miun.dt170g.application_restaurant.entities.MenuItemOrdersDTO;
 import miun.dt170g.application_restaurant.entities.MenuItemsDTO;
 import miun.dt170g.application_restaurant.entities.OrdersDTO;
+import miun.dt170g.application_restaurant.entities.TablesDTO;
 import miun.dt170g.application_restaurant.retrofit.RetrofitClient;
 import miun.dt170g.application_restaurant.retrofit.RetrofitInterface;
 import retrofit2.Call;
@@ -53,13 +54,54 @@ public class testActivity extends AppCompatActivity {
             // Place an order when a menu item is clicked
             MenuItemsDTO mi_dto = new MenuItemsDTO();
             mi_dto.setName(item.getMenuItem().getName());
+            mi_dto.setId(45);
             OrdersDTO o_dto = new OrdersDTO();
             o_dto.setStatusOrder(false);
+            TablesDTO t_dto = new TablesDTO(7, false);
+            o_dto.setTable(t_dto);
             // o_dto.getTable().setTableNum();
 
-            //placeOrder(o_dto, mi_dto);
+            placeOrder(o_dto, mi_dto);
         };
         // fetchOrders();
+    }
+
+    /**
+     * This method sends a POST request to the
+     * api endpoint /api/menuitemorder/ through the
+     * "addTableOrder(@param MenuItemOrdersDTO)" method.
+     * The payload to be sent in the POST request
+     * is a MenuItemOrdersDTO object, which is composed of:
+     * @param o_dto The curated orders object
+     * @param mi_dto The curated menuitem object
+     */
+    private void placeOrder(OrdersDTO o_dto, MenuItemsDTO mi_dto) {
+        RetrofitInterface apiService = RetrofitClient.create();
+
+        MenuItemOrdersDTO mio_dto = new MenuItemOrdersDTO();
+        mio_dto.setOrder(o_dto);
+        mio_dto.setMenuItem(mi_dto);
+        mio_dto.setAmount(3);
+
+        // Make the POST request
+        Call<MenuItemOrdersDTO> call = apiService.addTableOrder(mio_dto);
+        call.enqueue(new Callback<MenuItemOrdersDTO>() {
+            @Override
+            public void onResponse(Call<MenuItemOrdersDTO> call, Response<MenuItemOrdersDTO> response) {
+                if (response.isSuccessful()) {
+                    // Handle the successful response here
+                    Toast.makeText(testActivity.this, "Order placed successfully!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Handle request errors here
+                    Toast.makeText(testActivity.this, "Order placement failed: " + response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<MenuItemOrdersDTO> call, Throwable t) {
+                // Handle the failure here, e.g., network error, etc.
+                Toast.makeText(testActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     /*
@@ -108,45 +150,6 @@ public class testActivity extends AppCompatActivity {
             }
         });
     }
-
-    /**
-     * This method sends a POST request to the
-     * api endpoint /api/menuitemorder/ through the
-     * "addTableOrder(@param MenuItemOrdersDTO)" method.
-     * The payload to be sent in the POST request
-     * is a MenuItemOrdersDTO object, which is composed of:
-     * @param o_dto The curated orders object
-     * @param mi_dto The curated menuitem object
-     */
-    private void placeOrder(OrdersDTO o_dto, MenuItemsDTO mi_dto) {
-        RetrofitInterface apiService = RetrofitClient.create();
-
-        MenuItemOrdersDTO mio_dto = new MenuItemOrdersDTO();
-        mio_dto.setOrder(o_dto);
-        mio_dto.setMenuItem(mi_dto);
-        mio_dto.setAmount(3);
-
-        // Make the POST request
-        Call<MenuItemOrdersDTO> call = apiService.addTableOrder(mio_dto);
-        call.enqueue(new Callback<MenuItemOrdersDTO>() {
-            @Override
-            public void onResponse(Call<MenuItemOrdersDTO> call, Response<MenuItemOrdersDTO> response) {
-                if (response.isSuccessful()) {
-                    // Handle the successful response here
-                    Toast.makeText(testActivity.this, "Order placed successfully!", Toast.LENGTH_SHORT).show();
-                } else {
-                    // Handle request errors here
-                    Toast.makeText(testActivity.this, "Order placement failed: " + response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
-            @Override
-            public void onFailure(Call<MenuItemOrdersDTO> call, Throwable t) {
-                // Handle the failure here, e.g., network error, etc.
-                Toast.makeText(testActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
 
     private void fetchOrders() {
         RetrofitInterface apiData = RetrofitClient.create();

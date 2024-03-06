@@ -3,6 +3,7 @@ package miun.dt170g.application_restaurant.retrofit;
 import java.util.ArrayList;
 
 import miun.dt170g.application_restaurant.entities.AlacarteMenuItem;
+import miun.dt170g.application_restaurant.entities.AlacarteMenuItemsDTO;
 import miun.dt170g.application_restaurant.entities.Employee;
 import miun.dt170g.application_restaurant.entities.MenuItemOrdersDTO;
 import miun.dt170g.application_restaurant.entities.Order;
@@ -17,7 +18,7 @@ import retrofit2.http.Path;
 public interface RetrofitInterface {
 
     @GET("alacartemenuitem")
-    Call<ArrayList<AlacarteMenuItem>> getAlacarteMenuItem();
+    Call<ArrayList<AlacarteMenuItemsDTO>> getAlacarteMenuItem();
 
     @GET("employees")
     Call<ArrayList<Employee>> getEmployee();

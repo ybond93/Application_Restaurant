@@ -12,13 +12,14 @@ import java.util.List;
 import miun.dt170g.application_restaurant.OnItemClickListener;
 import miun.dt170g.application_restaurant.entities.AlacarteMenuItem;
 import miun.dt170g.application_restaurant.R;
+import miun.dt170g.application_restaurant.entities.AlacarteMenuItemsDTO;
 
 public class AlacarteMenuAdapter extends RecyclerView.Adapter<AlacarteMenuAdapter.ViewHolder> {
 
-    private List<AlacarteMenuItem> menuItems;
+    private List<AlacarteMenuItemsDTO> menuItems;
     private OnItemClickListener listener;
 
-    public AlacarteMenuAdapter(List<AlacarteMenuItem> menuItems, OnItemClickListener listener) {
+    public AlacarteMenuAdapter(List<AlacarteMenuItemsDTO> menuItems, OnItemClickListener listener) {
         this.listener = listener;
         this.menuItems = menuItems;
     }
@@ -32,8 +33,8 @@ public class AlacarteMenuAdapter extends RecyclerView.Adapter<AlacarteMenuAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        AlacarteMenuItem item = menuItems.get(position);
-        holder.itemName.setText(item.getMenuItem().getName());
+        AlacarteMenuItemsDTO item = menuItems.get(position);
+        holder.itemName.setText(item.getMenuItemName());
         holder.itemCategory.setText(item.getCategory());
 
         // Set the click listener
@@ -55,7 +56,7 @@ public class AlacarteMenuAdapter extends RecyclerView.Adapter<AlacarteMenuAdapte
         }
     }
 
-    public void setMenuItems(List<AlacarteMenuItem> menuItems) {
+    public void setMenuItems(List<AlacarteMenuItemsDTO> menuItems) {
         this.menuItems = menuItems;
     }
 

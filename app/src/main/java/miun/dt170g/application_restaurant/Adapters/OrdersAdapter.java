@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import miun.dt170g.application_restaurant.R;
 import miun.dt170g.application_restaurant.entities.AlacarteMenuItem;
+import miun.dt170g.application_restaurant.entities.AlacarteMenuItemsDTO;
 import miun.dt170g.application_restaurant.entities.MenuItemOrdersDTO;
 import miun.dt170g.application_restaurant.entities.MenuItemsDTO;
 import miun.dt170g.application_restaurant.entities.OrdersDTO;
@@ -19,7 +20,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MenuItemOr
 
     private final List<MenuItemOrdersDTO> menuItemOrdersList;
     private final LayoutInflater inflater;
-    private List<AlacarteMenuItem> allMenuItems; // List to hold all menu items
+    private List<AlacarteMenuItemsDTO> allMenuItems; // List to hold all menu items
 
 
     public OrdersAdapter(Context context, List<MenuItemOrdersDTO> menuItemOrdersList) {
@@ -72,13 +73,13 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MenuItemOr
         this.menuItemOrdersList.addAll(newOrders);
         notifyDataSetChanged();
     }
-    public void setAllMenuItems(List<AlacarteMenuItem> allMenuItems) {
+    public void setAllMenuItems(List<AlacarteMenuItemsDTO> allMenuItems) {
         this.allMenuItems = allMenuItems;
     }
     private String getMenuItemNameById(int id) {
-        for (AlacarteMenuItem item : allMenuItems) {
-            if (item.getMenuItem().getMenuItemId() == id) {
-                return item.getMenuItem().getName();
+        for (AlacarteMenuItemsDTO item : allMenuItems) {
+            if (item.getCarteItemId() == id) {
+                return item.getMenuItemName();
             }
         }
         Log.d("OrdersAdapter", "Item not found for ID: " + id); // Debugging line

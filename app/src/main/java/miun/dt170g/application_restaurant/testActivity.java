@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import miun.dt170g.application_restaurant.Adapters.AlacarteMenuAdapter;
-import miun.dt170g.application_restaurant.Adapters.ChildItemAdapter;
 import miun.dt170g.application_restaurant.Adapters.OrdersAdapter;
 import miun.dt170g.application_restaurant.entities.AlacarteMenuItem;
+import miun.dt170g.application_restaurant.entities.AlacarteMenuItemsDTO;
 import miun.dt170g.application_restaurant.entities.MenuItemOrdersDTO;
 import miun.dt170g.application_restaurant.entities.MenuItemsDTO;
 import miun.dt170g.application_restaurant.entities.OrdersDTO;
@@ -49,11 +49,11 @@ public class testActivity extends AppCompatActivity {
 
         itemClickListener = (item, position) -> {
             // Click event
-            Toast.makeText(testActivity.this, "Clicked: " + item.getMenuItem().getName(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(testActivity.this, "Clicked: " + item.getMenuItemName(), Toast.LENGTH_SHORT).show();
 
             // Place an order when a menu item is clicked
             MenuItemsDTO mi_dto = new MenuItemsDTO();
-            mi_dto.setName(item.getMenuItem().getName());
+            mi_dto.setName(item.getMenuItemName());
             mi_dto.setId(45);
             OrdersDTO o_dto = new OrdersDTO();
             o_dto.setStatusOrder(false);
@@ -111,18 +111,18 @@ public class testActivity extends AppCompatActivity {
      */
     private void fetchAlacarteMenuItems() {
         RetrofitInterface apiData = RetrofitClient.create();
-        Call<ArrayList<AlacarteMenuItem>> alacarteMenuItemApi = apiData.getAlacarteMenuItem();
-        alacarteMenuItemApi.enqueue(new Callback<ArrayList<AlacarteMenuItem>>() {
+        Call<ArrayList<AlacarteMenuItemsDTO>> alacarteMenuItemApi = apiData.getAlacarteMenuItem();
+        alacarteMenuItemApi.enqueue(new Callback<ArrayList<AlacarteMenuItemsDTO>>() {
             @Override
-            public void onResponse(Call<ArrayList<AlacarteMenuItem>> call, Response<ArrayList<AlacarteMenuItem>> response) {
+            public void onResponse(Call<ArrayList<AlacarteMenuItemsDTO>> call, Response<ArrayList<AlacarteMenuItemsDTO>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    ArrayList<AlacarteMenuItem> alacarteMenuItemList = response.body();
+                    ArrayList<AlacarteMenuItemsDTO> alacarteMenuItemList = response.body();
 
                     // Categorize items
-                    List<AlacarteMenuItem> drinks = filterItemsByCategory(alacarteMenuItemList, "Drink");
-                    List<AlacarteMenuItem> mains = filterItemsByCategory(alacarteMenuItemList, "Main");
-                    List<AlacarteMenuItem> starters = filterItemsByCategory(alacarteMenuItemList, "Starter");
-                    List<AlacarteMenuItem> desserts = filterItemsByCategory(alacarteMenuItemList, "Dessert");
+                    List<AlacarteMenuItemsDTO> drinks = filterItemsByCategory(alacarteMenuItemList, "Drink");
+                    List<AlacarteMenuItemsDTO> mains = filterItemsByCategory(alacarteMenuItemList, "Main");
+                    List<AlacarteMenuItemsDTO> starters = filterItemsByCategory(alacarteMenuItemList, "Starter");
+                    List<AlacarteMenuItemsDTO> desserts = filterItemsByCategory(alacarteMenuItemList, "Dessert");
 
                     Log.d("CategorySizes", "Drinks: " + drinks.size() + ", Mains: " + mains.size() + ", Starters: " + starters.size() + ", Desserts: " + desserts.size());
 
@@ -145,7 +145,7 @@ public class testActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ArrayList<AlacarteMenuItem>> call, Throwable t) {
+            public void onFailure(Call<ArrayList<AlacarteMenuItemsDTO>> call, Throwable t) {
                 Log.e("API Error", "Failed to fetch data", t);
             }
         });
@@ -176,7 +176,6 @@ public class testActivity extends AppCompatActivity {
         });
     }
 
-
     private void initViews() {
         recyclerViewDrinks = findViewById(R.id.recyclerViewDrinks);
         recyclerViewMains = findViewById(R.id.recyclerViewMains);
@@ -199,13 +198,13 @@ public class testActivity extends AppCompatActivity {
         ordersAdapter = new OrdersAdapter(this, ordersList);
         recyclerViewOrders.setAdapter(ordersAdapter);
     }
+
     private void setHeaderClickListeners() {
         headerDrinks.setOnClickListener(v -> toggleRecyclerViewVisibility(recyclerViewDrinks));
         headerMains.setOnClickListener(v -> toggleRecyclerViewVisibility(recyclerViewMains));
         headerStarters.setOnClickListener(v -> toggleRecyclerViewVisibility(recyclerViewStarters));
         headerDesserts.setOnClickListener(v -> toggleRecyclerViewVisibility(recyclerViewDesserts));
         headerOrders.setOnClickListener(v -> toggleRecyclerViewVisibility(recyclerViewOrders));
-
     }
 
     private void toggleRecyclerViewVisibility(RecyclerView recyclerView) {
@@ -216,13 +215,13 @@ public class testActivity extends AppCompatActivity {
     }
 
 
-    private List<AlacarteMenuItem> filterItemsByCategory(List<AlacarteMenuItem> items, String category) {
+    private List<AlacarteMenuItemsDTO> filterItemsByCategory(List<AlacarteMenuItemsDTO> items, String category) {
         return items.stream()
                 .filter(item -> category.equals(item.getCategory()))
                 .collect(Collectors.toList());
     }
 
-    private void updateRecyclerView(RecyclerView recyclerView, List<AlacarteMenuItem> items) {
+    private void updateRecyclerView(RecyclerView recyclerView, List<AlacarteMenuItemsDTO> items) {
         AlacarteMenuAdapter adapter = (AlacarteMenuAdapter) recyclerView.getAdapter();
         if (adapter == null) {
             adapter = new AlacarteMenuAdapter(items, itemClickListener);

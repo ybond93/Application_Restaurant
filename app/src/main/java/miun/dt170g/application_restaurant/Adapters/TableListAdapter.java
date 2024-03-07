@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import androidx.core.content.ContextCompat; // Make sure to import ContextCompat
 
 import miun.dt170g.application_restaurant.R; // Make sure you import R from your project
 import miun.dt170g.application_restaurant.RecyclerViewInterface;
@@ -23,14 +25,14 @@ import miun.dt170g.application_restaurant.entities.Table;
 public class TableListAdapter extends RecyclerView.Adapter<TableListAdapter.TableViewHolder> {
 
     private final Context context;
-    private ArrayList<Table> tableList; // Use List<Table>
+    private ArrayList<Table> tableList;
     private final RecyclerViewInterface recyclerViewInterface;
-    private final Set<String> activeOrders; // Track tables with active orders
+    private final Set<String> activeOrders;
 
     // Constructor
     public TableListAdapter(Context context, List<Table> tableList, RecyclerViewInterface recyclerViewInterface, Set<String> activeOrders) {
         this.context = context;
-        this.tableList = new ArrayList<>(tableList); // Adapt here
+        this.tableList = new ArrayList<>(tableList);
         this.recyclerViewInterface = recyclerViewInterface;
         this.activeOrders = activeOrders;
     }
@@ -51,45 +53,66 @@ public class TableListAdapter extends RecyclerView.Adapter<TableListAdapter.Tabl
         return new TableViewHolder(view);
     }
 
+
     @Override
-    //binds data
     public void onBindViewHolder(@NonNull TableListAdapter.TableViewHolder holder, int position) {
-        //set table number to textView
         Table currentTable = tableList.get(position);
-        String tableDisplay = "Table " + currentTable.getTableNum(); // Displaying table number
+        String tableDisplay = "Table " + currentTable.getTableNum();
         holder.tableName.setText(tableDisplay);
 
-        // Set initial background color based on active orders
-        boolean isActive = activeOrders.contains(String.valueOf(currentTable.getTableNum()));
-        holder.itemView.setBackgroundColor(isActive ? Color.YELLOW : Color.TRANSPARENT);
+        // Setting the background color based on the table status using custom colors
+        holder.itemView.setBackgroundColor(ContextCompat.getColor(context, currentTable.getStatus() ? R.color.red : R.color.green));
 
-        // Set click listener for the itemView for normal click
         holder.itemView.setOnClickListener(v -> {
             if (recyclerViewInterface != null) {
                 recyclerViewInterface.onItemClick(position);
             }
         });
-
-        // Set long click listener for the itemView for status change
+        /*
         holder.itemView.setOnLongClickListener(v -> {
-            // Determine the new status
-            Boolean newStatus = currentTable.getStatus().equals(false) ? true : false;
-            currentTable.setStatus(newStatus); // Locally update the status
+            if (currentTable.getStatus()) {
+                // Directly toggle status locally for immediate UI feedback
+                currentTable.setStatus(!currentTable.getStatus()); // Assuming you have a setStatus method.
 
-            // Optionally, call the method to update the status on the server
+                // Update the color immediately based on the new status
+                holder.itemView.setBackgroundColor(ContextCompat.getColor(context, currentTable.getStatus() ? R.color.red : R.color.green));
+ // Show a toast message based on the new status
+            Toast.makeText(context,
+                    currentTable.getStatus() ? "Table "+currentTable.getTableNum()+" Occupied" : "Table "+currentTable.getTableNum()+" Available",
+                    Toast.LENGTH_SHORT).show();
+
+                // Update the status on the server
+                if (context instanceof Table_list_Activity) {
+                    ((Table_list_Activity) context).updateTableStatus(currentTable.getTableNum(), currentTable.getStatus());
+                }
+            }
+            return true; // Consume the long click event
+        });*/
+        holder.itemView.setOnLongClickListener(v -> {
+            // Toggle the status locally
+            currentTable.setStatus(!currentTable.getStatus());
+
+            // Update the UI immediately to reflect the new status
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(context,
+                    currentTable.getStatus() ? R.color.red : R.color.green));
+
+            // Show a toast message based on the new status
+            Toast.makeText(context,
+                    currentTable.getStatus() ? "Table "+currentTable.getTableNum()+" Occupied" : "Table "+currentTable.getTableNum()+" Available",
+                    Toast.LENGTH_SHORT).show();
+
+            // Now call the method in your Activity to update the status on the server
             if (context instanceof Table_list_Activity) {
-                ((Table_list_Activity) context).updateTableStatus(currentTable.getTableNum(), newStatus);
-            } else {
-                // Update the background color based on the new status
-                v.setBackgroundColor(newStatus.equals("Active") ? Color.YELLOW : Color.TRANSPARENT);
-
-                // Optionally, refresh the adapter or perform other UI updates here
-                notifyItemChanged(position);
+                ((Table_list_Activity) context).updateTableStatus(currentTable.getTableNum(), currentTable.getStatus());
             }
 
-            return true; // Indicate that the callback consumed the long click
+            return true; // Consume the long click event
         });
+
+
+
     }
+
 
     @Override
     //getter

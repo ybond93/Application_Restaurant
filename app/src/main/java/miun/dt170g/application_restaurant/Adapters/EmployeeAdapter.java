@@ -35,7 +35,7 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
     @Override
     //Fill the layout for each item in RecyclerView
     public EmployeeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_1, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.employee_item, parent, false);
         return new EmployeeViewHolder(view, recyclerViewInterface);
     }
 
@@ -64,7 +64,7 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
         //set onitemclick
         public EmployeeViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
-            employeeName = itemView.findViewById(android.R.id.text1); // Using simple_list_item_1's TextView
+            employeeName = itemView.findViewById(R.id.employee_name); // Using simple_list_item_1's TextView
             itemView.setOnClickListener(v -> {
                 if (recyclerViewInterface != null) {
                     int position = getAdapterPosition();

@@ -35,7 +35,10 @@ public class Table_list_Activity extends AppCompatActivity  {
 
         recyclerView = findViewById(R.id.tableListRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new SpacesItemDecoration(16)); // Adjust the space size as needed
 
+        //EmployeeAdapter adapter = new EmployeeAdapter(this, employeeList, recyclerViewInterface);
+        recyclerView.setAdapter(adapter);
         fetchTables();
     }
 

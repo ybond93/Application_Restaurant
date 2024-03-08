@@ -33,7 +33,10 @@ public class MainActivity extends AppCompatActivity {
         // Initialize RecyclerView
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new SpacesItemDecoration(16)); // Adjust the space size as needed
 
+        //EmployeeAdapter adapter = new EmployeeAdapter(this, employeeList, recyclerViewInterface);
+        recyclerView.setAdapter(adapter);
         // Fetch employees and set up the adapter in the fetchEmployees method
         fetchEmployees();
     }

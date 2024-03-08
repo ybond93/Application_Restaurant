@@ -49,7 +49,7 @@ public class TableListAdapter extends RecyclerView.Adapter<TableListAdapter.Tabl
     @Override
     //fill the recyclerView
     public TableListAdapter.TableViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_1, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.table_item, parent, false);
         return new TableViewHolder(view);
     }
 
@@ -126,8 +126,9 @@ public class TableListAdapter extends RecyclerView.Adapter<TableListAdapter.Tabl
 
         public TableViewHolder(@NonNull View itemView) {
             super(itemView);
-            tableName = itemView.findViewById(android.R.id.text1);
+            tableName = itemView.findViewById(R.id.tableName);
         }
     }
+
 
 }

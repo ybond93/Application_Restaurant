@@ -42,7 +42,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.MenuItemOr
         OrdersDTO order = currentOrder.getOrder();
 
         holder.menuItemNameTextView.setText(menuItem.getName());
-        holder.menuItemAmountTextView.setText(String.valueOf(currentOrder.getAmount()));
+        holder.menuItemAmountTextView.setText(String.format("Amount: %d",currentOrder.getAmount()));
         holder.menuItemPriceTextView.setText(String.format("$%.2f", menuItem.getPrice()));
         holder.orderIdTextView.setText(String.format("Order ID: %d", order.getOrderId()));
         // Additional fields can be set here if required

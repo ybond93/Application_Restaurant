@@ -33,6 +33,7 @@ public class testActivity extends AppCompatActivity {
     private RecyclerView recyclerViewDrinks, recyclerViewMains, recyclerViewStarters, recyclerViewDesserts, recyclerViewOrders;
     private TextView headerDrinks, headerMains, headerStarters, headerDesserts, headerOrders;
     private OrdersAdapter ordersAdapter;
+    private AlacarteMenuAdapter menuAdapter;
     private List<MenuItemOrdersDTO> ordersList = new ArrayList<>();
     private int selectedTableNumber; // Variable to hold the selected table number
     private OnItemClickListener itemClickListener;
@@ -42,6 +43,7 @@ public class testActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
         selectedTableNumber = getIntent().getIntExtra("selectedTableNumber", -1);
+
         initViews();
         setHeaderClickListeners();
         setupRecyclerViews();
@@ -196,6 +198,9 @@ public class testActivity extends AppCompatActivity {
         // Initialize the OrderAdapter with an empty list initially
         ordersAdapter = new OrdersAdapter(this, ordersList);
         recyclerViewOrders.setAdapter(ordersAdapter);
+
+        //recyclerViewOrders.addItemDecoration(new SpacesItemDecoration(16)); // Adjust the space size as needed
+        //recyclerViewOrders.setAdapter(ordersAdapter);
     }
 
     private void setHeaderClickListeners() {

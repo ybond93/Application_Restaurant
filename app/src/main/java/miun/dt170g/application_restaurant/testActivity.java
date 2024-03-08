@@ -63,7 +63,12 @@ public class testActivity extends AppCompatActivity {
 
             placeOrder(o_dto, mi_dto);
         };
-        // fetchOrders();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fetchOrders();
     }
 
     /**
@@ -132,9 +137,6 @@ public class testActivity extends AppCompatActivity {
                     updateRecyclerView(recyclerViewStarters, starters);
                     updateRecyclerView(recyclerViewDesserts, desserts);
                     ordersAdapter.setAllMenuItems(alacarteMenuItemList);
-
-                    // Only after this, fetch orders
-                    // A La Carte and Orders in the same onResponse?
 
                     fetchOrders();
                 } else {
